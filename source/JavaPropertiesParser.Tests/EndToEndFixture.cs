@@ -1,4 +1,5 @@
 ﻿using Assent;
+using JavaPropertiesParser.Tests.TestUtils;
 using JavaPropertiesParser.Tests.Utils;
 using NUnit.Framework;
 

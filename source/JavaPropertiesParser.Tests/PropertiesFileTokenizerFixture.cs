@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using FluentAssertions;
+using JavaPropertiesParser.Tests.TestUtils;
 using JavaPropertiesParser.Tokenization;
 using NUnit.Framework;
 using Superpower.Model;

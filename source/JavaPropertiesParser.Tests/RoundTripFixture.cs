@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using JavaPropertiesParser.Tests.TestUtils;
 using NUnit.Framework;
 
 namespace JavaPropertiesParser.Tests

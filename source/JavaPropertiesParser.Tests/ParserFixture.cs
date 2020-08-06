@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using JavaPropertiesParser.Expressions;
+using JavaPropertiesParser.Tests.TestUtils;
 using NUnit.Framework;
 using static JavaPropertiesParser.Expressions.Build;
 
