@@ -72,6 +72,11 @@ namespace JavaPropertiesParser
             return Token(TokenType.KeyEscapeSequence, serializableValue);
         }
 
+        public static Token<TokenType> KeyPhysicalNewLine(string serializableValue)
+        {
+            return Token(TokenType.KeyPhysicalNewLine, serializableValue);
+        }
+
         public static Token<TokenType> ValueChars(string serializableValue)
         {
             return Token(TokenType.ValueChars, serializableValue);

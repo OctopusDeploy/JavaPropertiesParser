@@ -129,5 +129,26 @@ namespace JavaPropertiesParser.Tests
         
             parsed.Should().Be(expected);
         }
+
+        [Test]
+        public void CanParseAKeyWithAPhysicalNewLine()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("key-with-physical-newline.properties");
+            var parsed = Parser.Parse(input);
+
+            var expected = Doc(
+                Pair(
+                    Key(
+                        KeyChars("ke"),
+                        KeyPhysicalNewLine("\\\r\n"),
+                        KeyChars("y")
+                    ),
+                    Separator(":"),
+                    Value("value")
+                )
+            );
+        
+            parsed.Should().Be(expected);
+        }
     }
 }
