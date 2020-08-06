@@ -37,6 +37,11 @@ namespace JavaPropertiesParser
             return new KeyExpression(KeyChars(serializableValue));
         }
 
+        public static KeyExpression Key(params Token<TokenType>[] tokens)
+        {
+            return new KeyExpression(tokens);
+        }
+
         public static SeparatorExpression Separator(string serializableValue)
         {
             return new SeparatorExpression(Token(TokenType.Separator, serializableValue));
@@ -60,6 +65,11 @@ namespace JavaPropertiesParser
         public static Token<TokenType> KeyChars(string serializableValue)
         {
             return Token(TokenType.KeyChars, serializableValue);
+        }
+
+        public static Token<TokenType> KeyEscapeSequence(string serializableValue)
+        {
+            return Token(TokenType.KeyEscapeSequence, serializableValue);
         }
 
         public static Token<TokenType> ValueChars(string serializableValue)
