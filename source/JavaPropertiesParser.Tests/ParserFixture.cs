@@ -2,7 +2,7 @@
 using JavaPropertiesParser.Expressions;
 using JavaPropertiesParser.Tests.TestUtils;
 using NUnit.Framework;
-using static JavaPropertiesParser.Expressions.Build;
+using static JavaPropertiesParser.Build;
 
 namespace JavaPropertiesParser.Tests
 {
@@ -53,6 +53,23 @@ namespace JavaPropertiesParser.Tests
 
             var expected = Doc(
                 Whitespace("\r\n")
+            );
+        
+            parsed.Should().Be(expected);
+        }
+        
+        [Test]
+        public void CanParseAKeyWithASeparatorAndValue()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("key-with-colon-separator.properties");
+            var parsed = Parser.Parse(input);
+
+            var expected = Doc(
+                Pair(
+                    Key("key"),
+                    Separator(":"),
+                    Value("value")
+                )
             );
         
             parsed.Should().Be(expected);

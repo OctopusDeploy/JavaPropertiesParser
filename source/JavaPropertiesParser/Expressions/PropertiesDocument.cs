@@ -26,11 +26,11 @@ namespace JavaPropertiesParser.Expressions
                 {
                     switch (expr)
                     {
-                        case KeyValuePair pair when pair.Key.Value.LogicalValue == key:
-                            return new KeyValuePair(
-                                pair.Key,
-                                pair.Separator,
-                                new Value(value)
+                        case KeyValuePairExpression pair when pair.KeyExpression.Value.LogicalValue == key:
+                            return new KeyValuePairExpression(
+                                pair.KeyExpression,
+                                pair.SeparatorExpression,
+                                new ValueExpression(value)
                             );
                         
                         default:

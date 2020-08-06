@@ -3,7 +3,6 @@ using JavaPropertiesParser.Utils;
 using Superpower;
 using Superpower.Model;
 using Superpower.Parsers;
-using Comment = JavaPropertiesParser.Expressions.Comment;
 
 namespace JavaPropertiesParser.Parsing
 {
@@ -23,31 +22,31 @@ namespace JavaPropertiesParser.Parsing
             TokenType.ValueUnicodeEscapeSequence
         );
         
-        private static readonly TokenListParser<TokenType, Key> KeyParser = 
+        private static readonly TokenListParser<TokenType, KeyExpression> KeyParser = 
             from tokens in KeyComponent.AtLeastOnce()
-            select new Key(tokens);
+            select new KeyExpression(tokens);
         
-        private static readonly TokenListParser<TokenType, Separator> SeparatorParser = 
+        private static readonly TokenListParser<TokenType, SeparatorExpression> SeparatorParser = 
             from token in Token.EqualTo(TokenType.Separator)
-            select new Separator(token);
+            select new SeparatorExpression(token);
         
-        private static readonly TokenListParser<TokenType, Value> ValueParser = 
+        private static readonly TokenListParser<TokenType, ValueExpression> ValueParser = 
             from tokens in ValueComponent.AtLeastOnce()
-            select new Value(tokens);
+            select new ValueExpression(tokens);
         
         private static readonly TokenListParser<TokenType, ITopLevelExpression> KeyValuePairParser =
             from key in KeyParser
             from separator in SeparatorParser.OptionalOrDefault()
             from value in ValueParser.OptionalOrDefault()
-            select (ITopLevelExpression)new KeyValuePair(key, separator, value);
+            select (ITopLevelExpression)new KeyValuePairExpression(key, separator, value);
 
         private static readonly TokenListParser<TokenType, ITopLevelExpression> CommentParser = 
             from token in Token.EqualTo(TokenType.Comment)
-            select (ITopLevelExpression)new Comment(token);
+            select (ITopLevelExpression)new CommentExpression(token);
         
         private static readonly TokenListParser<TokenType, ITopLevelExpression> WhiteSpaceParser = 
             from token in Token.EqualTo(TokenType.Whitespace)
-            select (ITopLevelExpression)new WhiteSpace(token);
+            select (ITopLevelExpression)new WhiteSpaceExpression(token);
 
         private static readonly TokenListParser<TokenType, ITopLevelExpression> TopLevelExpressions = KeyValuePairParser
             .Or(CommentParser)
