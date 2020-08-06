@@ -57,9 +57,9 @@ namespace JavaPropertiesParser.Tests
         
             parsed.Should().Be(expected);
         }
-        
+
         [Test]
-        public void CanParseAKeyWithASeparatorAndValue()
+        public void CanParseAKeyWithAColonSeparatorAndValue()
         {
             var input = ResourceUtils.ReadEmbeddedResource("key-with-colon-separator.properties");
             var parsed = Parser.Parse(input);
@@ -68,6 +68,40 @@ namespace JavaPropertiesParser.Tests
                 Pair(
                     Key("key"),
                     Separator(":"),
+                    Value("value")
+                )
+            );
+        
+            parsed.Should().Be(expected);
+        }
+
+        [Test]
+        public void CanParseAKeyWithASpaceSeparatorAndValue()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("key-with-space-separator.properties");
+            var parsed = Parser.Parse(input);
+
+            var expected = Doc(
+                Pair(
+                    Key("key"),
+                    Separator(" "),
+                    Value("value")
+                )
+            );
+        
+            parsed.Should().Be(expected);
+        }
+
+        [Test]
+        public void CanParseAKeyWithAnEqualsSeparatorAndValue()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("key-with-equals-separator.properties");
+            var parsed = Parser.Parse(input);
+
+            var expected = Doc(
+                Pair(
+                    Key("key"),
+                    Separator("="),
                     Value("value")
                 )
             );
