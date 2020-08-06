@@ -8,10 +8,10 @@ namespace JavaPropertiesParser.Tokenization
     public class PropertiesFileTokenizer : Tokenizer<TokenType>
     {
         // TODO: handle multiline values
+        // TODO: handle pairs with no key
 
         private static readonly TextParser<TokenType> StartOfFileParser = Comments.Parser
             .Or(Whitespace.Parser)
-            .Or(NewLines.Parser)
             .Or(Keys.Parser);
 
         private static readonly TextParser<TokenType> AfterWhitespaceParser = Comments.Parser
@@ -19,13 +19,13 @@ namespace JavaPropertiesParser.Tokenization
 
         private static readonly TextParser<TokenType> AfterKeyComponentParser = Keys.Parser
             .Or(Separators.Parser)
-            .Or(NewLines.Parser);
+            .Or(Whitespace.Parser);
 
         private static readonly TextParser<TokenType> AfterSeparatorParser = Values.Parser
-            .Or(NewLines.Parser);
+            .Or(Whitespace.Parser);
 
         private static readonly TextParser<TokenType> AfterValueComponentParser = Values.Parser
-            .Or(NewLines.Parser);
+            .Or(Whitespace.Parser);
 
         private static readonly TextParser<TokenType> AfterCommentParser = Whitespace.Parser;
 
