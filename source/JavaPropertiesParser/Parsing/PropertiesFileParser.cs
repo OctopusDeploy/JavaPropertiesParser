@@ -23,37 +23,37 @@ namespace JavaPropertiesParser.Parsing
             TokenType.ValueUnicodeEscapeSequence
         );
         
-        public static readonly TokenListParser<TokenType, Key> KeyParser = 
+        private static readonly TokenListParser<TokenType, Key> KeyParser = 
             from tokens in KeyComponent.AtLeastOnce()
             select new Key(tokens);
         
-        public static readonly TokenListParser<TokenType, Separator> SeparatorParser = 
+        private static readonly TokenListParser<TokenType, Separator> SeparatorParser = 
             from token in Token.EqualTo(TokenType.Separator)
             select new Separator(token);
         
-        public static readonly TokenListParser<TokenType, Value> ValueParser = 
+        private static readonly TokenListParser<TokenType, Value> ValueParser = 
             from tokens in ValueComponent.AtLeastOnce()
             select new Value(tokens);
         
-        public static readonly TokenListParser<TokenType, ITopLevelExpression> KeyValuePairParser =
+        private static readonly TokenListParser<TokenType, ITopLevelExpression> KeyValuePairParser =
             from key in KeyParser
             from separator in SeparatorParser.OptionalOrDefault()
             from value in ValueParser.OptionalOrDefault()
             select (ITopLevelExpression)new KeyValuePair(key, separator, value);
 
-        public static readonly TokenListParser<TokenType, ITopLevelExpression> CommentParser = 
+        private static readonly TokenListParser<TokenType, ITopLevelExpression> CommentParser = 
             from token in Token.EqualTo(TokenType.Comment)
             select (ITopLevelExpression)new Comment(token);
         
-        public static readonly TokenListParser<TokenType, ITopLevelExpression> WhiteSpaceParser = 
+        private static readonly TokenListParser<TokenType, ITopLevelExpression> WhiteSpaceParser = 
             from token in Token.EqualTo(TokenType.Whitespace)
             select (ITopLevelExpression)new WhiteSpace(token);
 
-        public static readonly TokenListParser<TokenType, ITopLevelExpression> TopLevelExpressions = KeyValuePairParser
+        private static readonly TokenListParser<TokenType, ITopLevelExpression> TopLevelExpressions = KeyValuePairParser
             .Or(CommentParser)
             .Or(WhiteSpaceParser);
 
-        public static readonly TokenListParser<TokenType, PropertiesDocument> DocumentParser = 
+        private static readonly TokenListParser<TokenType, PropertiesDocument> DocumentParser = 
             from expressions in TopLevelExpressions.Many()
             select new PropertiesDocument(expressions);
 
