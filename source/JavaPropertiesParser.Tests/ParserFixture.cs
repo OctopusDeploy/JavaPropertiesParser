@@ -161,6 +161,23 @@ namespace JavaPropertiesParser.Tests
         }
         
         [Test]
+        public void CanParseAKeyWithAUnicodeEscape()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("key-with-unicode-escape.properties");
+            var parsed = Parser.Parse(input);
+        
+            var expected = Doc(
+                Pair(
+                    Key("keyὅ", "key\\u1f45"),
+                    Separator(":"),
+                    Value("value")
+                )
+            );
+        
+            parsed.Should().Be(expected);
+        }
+        
+        [Test]
         public void CanParseWhitespaceBeforeAComment()
         {
             var input = ResourceUtils.ReadEmbeddedResource("whitespace-before-comment.properties");

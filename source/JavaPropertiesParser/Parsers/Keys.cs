@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 using JavaPropertiesParser.Expressions;
 using JavaPropertiesParser.Utils;
@@ -10,22 +11,16 @@ namespace JavaPropertiesParser.Parsers
     {
         private static readonly Parser<char> HexDigit = Parse.Chars("1234567890abcdefABCDEF");
 
-        private static string DecodeUnicodeHex(string hexDigits)
+        private static char DecodeUnicodeHex(string hexDigits)
         {
-            var bytes = new byte[]
-            {
-                Convert.ToByte(hexDigits.Substring(0, 2)),
-                Convert.ToByte(hexDigits.Substring(3, 2))
-            };
-            
-            return Encoding.Unicode.GetChars(bytes).ToString();
+            return (char)int.Parse(hexDigits, NumberStyles.HexNumber);
         }
 
         private static readonly Parser<StringValue> EscapedUnicodeSequenceParser =
             from u in Parse.Char('u')
             from digits in HexDigit.Repeat(4).Text()
             let decoded = DecodeUnicodeHex(digits)
-            select new StringValue(decoded, "\\u" + digits);
+            select new StringValue(decoded.ToString(), "\\u" + digits);
 
         private static Parser<StringValue> BuildEscapeSequenceParser(char @char, string logicalValue)
         {

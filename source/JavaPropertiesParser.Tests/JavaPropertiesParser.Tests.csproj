@@ -18,6 +18,7 @@
     <ItemGroup>
       <EmbeddedResource Include="Resources\key-with-colon-separator.properties" />
       <EmbeddedResource Include="Resources\key-with-equals-separator.properties" />
+      <EmbeddedResource Include="Resources\key-with-unicode-escape.properties" />
       <EmbeddedResource Include="Resources\key-with-logical-newline.properties" />
       <EmbeddedResource Include="Resources\key-with-neither-separator-nor-value.properties" />
       <EmbeddedResource Include="Resources\key-with-physical-newline-and-indentation.properties" />
