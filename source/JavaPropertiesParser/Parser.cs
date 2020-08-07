@@ -8,7 +8,7 @@ namespace JavaPropertiesParser
     {
         public static Document Parse(string input)
         {
-            return Documents.Parser.Parse(input);
+            return Documents.Parser.End().Parse(input);
         }
     }
 }

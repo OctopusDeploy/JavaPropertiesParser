@@ -1,7 +1,9 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using JavaPropertiesParser.Expressions;
 using JavaPropertiesParser.Tests.TestUtils;
 using NUnit.Framework;
+using Sprache;
 using static JavaPropertiesParser.Build;
 
 namespace JavaPropertiesParser.Tests
@@ -325,6 +327,16 @@ namespace JavaPropertiesParser.Tests
             );
 
             parsed.Should().Be(expected);
+        }
+
+        [Test]
+        public void ThrowsExceptionOnInvalidUnicodeEscape()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("invalid-unicode-escape.properties");
+
+            Action action = () => Parser.Parse(input);
+            action.Should()
+                .ThrowExactly<ParseException>();
         }
     }
 }

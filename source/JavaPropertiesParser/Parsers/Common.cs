@@ -24,22 +24,22 @@ namespace JavaPropertiesParser.Parsers
 
         private static readonly Parser<StringValue> EscapedUnicodeSequenceParser =
             from u in Parse.Char('u')
-            from digits in Common.HexDigit.Repeat(4).Text()
-            let decoded = Common.DecodeUnicodeHex(digits)
+            from digits in HexDigit.Repeat(4).Text()
+            let decoded = DecodeUnicodeHex(digits)
             select new StringValue(decoded.ToString(), "\\u" + digits);
 
         private static readonly Parser<StringValue> EscapedOtherParser =
-            from next in Parse.AnyChar
+            from next in Parse.CharExcept("rntu")
             select new StringValue(next.ToString(), "\\" + next);
 
         public static readonly Parser<StringValue> EscapeSequenceParser =
             from slash in Parse.Char('\\')
-            from rest in Common.EscapedUnicodeSequenceParser
-                .Or(Common.EscapedCarriageReturnParser)
-                .Or(Common.EscapedLineFeedParser)
-                .Or(Common.EscapedTabParser)
-                .Or(Common.EscapedPhysicalNewLineParser)
-                .Or(Common.EscapedOtherParser)
+            from rest in EscapedUnicodeSequenceParser
+                .Or(EscapedCarriageReturnParser)
+                .Or(EscapedLineFeedParser)
+                .Or(EscapedTabParser)
+                .Or(EscapedPhysicalNewLineParser)
+                .Or(EscapedOtherParser)
             select rest;
 
         private static Parser<StringValue> BuildEscapeSequenceParser(char @char, string logicalValue)
