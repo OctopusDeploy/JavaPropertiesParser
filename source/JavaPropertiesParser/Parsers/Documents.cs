@@ -7,11 +7,11 @@ namespace JavaPropertiesParser.Parsers
     public static class Documents
     {
         private static readonly Parser<ITopLevelExpression> ExpressionsParser = Comments.Parser
-            .Or(Whitespace.Parser)
-            .Or(KeyValuePairs.Parser);
+            .XOr(Whitespace.Parser)
+            .XOr(KeyValuePairs.Parser);
 
         public static readonly Parser<Document> Parser =
-            from expressions in ExpressionsParser.Many()
+            from expressions in ExpressionsParser.XMany()
             select new Document(expressions.ToArray());
 
     }

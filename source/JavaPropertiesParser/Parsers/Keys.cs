@@ -7,14 +7,14 @@ namespace JavaPropertiesParser.Parsers
     public static class Keys
     {
         private static readonly Parser<StringValue> KeyCharsParser =
-            from chars in Parse.CharExcept(":= \t\\\r\n").AtLeastOnce().Text()
+            from chars in Parse.CharExcept(":= \t\\\r\n").XAtLeastOnce().Text()
             select new StringValue(chars, chars);
 
         private static readonly Parser<StringValue> KeyComponentParser = KeyCharsParser
-            .Or(Common.EscapeSequenceParser);
+            .XOr(Common.EscapeSequenceParser);
 
         public static readonly Parser<KeyExpression> Parser =
-            from components in KeyComponentParser.AtLeastOnce()
+            from components in KeyComponentParser.XAtLeastOnce()
             select new KeyExpression(components.Join());
     }
 }

@@ -7,7 +7,7 @@ namespace JavaPropertiesParser.Parsers
     {
         public static readonly Parser<ITopLevelExpression> Parser =
             from delimiter in Parse.Chars("!#")
-            from text in Parse.CharExcept("\r\n").Many().Text()
+            from text in Parse.CharExcept("\r\n").XMany().Text()
             select new CommentExpression(delimiter, text);
     }
 }

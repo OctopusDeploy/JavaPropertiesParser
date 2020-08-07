@@ -18,8 +18,8 @@ namespace JavaPropertiesParser.Parsers
         private static readonly Parser<StringValue> EscapedTabParser = BuildEscapeSequenceParser('t', "\t");
 
         private static readonly Parser<StringValue> EscapedPhysicalNewLineParser =
-            from newLine in Parse.String("\r\n").Or(Parse.String("\n")).Text()
-            from whitespace in Parse.Chars(" \t").Many().Text()
+            from newLine in Parse.String("\r\n").XOr(Parse.String("\n")).Text()
+            from whitespace in Parse.Chars(" \t").XMany().Text()
             select new StringValue("", "\\" + newLine + whitespace);
 
         private static readonly Parser<StringValue> EscapedUnicodeSequenceParser =
@@ -35,11 +35,11 @@ namespace JavaPropertiesParser.Parsers
         public static readonly Parser<StringValue> EscapeSequenceParser =
             from slash in Parse.Char('\\')
             from rest in EscapedUnicodeSequenceParser
-                .Or(EscapedCarriageReturnParser)
-                .Or(EscapedLineFeedParser)
-                .Or(EscapedTabParser)
-                .Or(EscapedPhysicalNewLineParser)
-                .Or(EscapedOtherParser)
+                .XOr(EscapedCarriageReturnParser)
+                .XOr(EscapedLineFeedParser)
+                .XOr(EscapedTabParser)
+                .XOr(EscapedPhysicalNewLineParser)
+                .XOr(EscapedOtherParser)
             select rest;
 
         private static Parser<StringValue> BuildEscapeSequenceParser(char @char, string logicalValue)
