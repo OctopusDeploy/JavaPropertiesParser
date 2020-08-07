@@ -17,7 +17,7 @@
 
         public override string ToString()
         {
-            return Key.ToString() + Separator + Value;
+            return Key?.ToString() + Separator + Value;
         }
 
         protected bool Equals(KeyValuePairExpression other)
@@ -37,7 +37,7 @@
         {
             unchecked
             {
-                var hashCode = (Key != null ? Key.GetHashCode() : 0);
+                var hashCode = Key != null ? Key.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ (Separator != null ? Separator.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Value != null ? Value.GetHashCode() : 0);
                 return hashCode;

@@ -16,11 +16,13 @@
     </ItemGroup>
 
     <ItemGroup>
+      <EmbeddedResource Include="Resources\empty-key.properties" />
       <EmbeddedResource Include="Resources\key-with-colon-separator.properties" />
       <EmbeddedResource Include="Resources\key-with-equals-separator-and-leading-whitespace.properties" />
       <EmbeddedResource Include="Resources\key-with-equals-separator-and-trailing-whitespace.properties" />
       <EmbeddedResource Include="Resources\key-with-equals-separator.properties" />
       <EmbeddedResource Include="Resources\key-with-multi-whitespace-separator.properties" />
+      <EmbeddedResource Include="Resources\key-with-separator-but-no-value.properties" />
       <EmbeddedResource Include="Resources\key-with-tab-separator.properties" />
       <EmbeddedResource Include="Resources\key-with-unicode-escape.properties" />
       <EmbeddedResource Include="Resources\key-with-logical-newline.properties" />

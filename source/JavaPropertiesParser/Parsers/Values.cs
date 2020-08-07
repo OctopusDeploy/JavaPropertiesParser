@@ -7,7 +7,7 @@ namespace JavaPropertiesParser.Parsers
     public static class Values
     {
         public static readonly Parser<StringValue> ValueCharsParser =
-            from text in Parse.CharExcept("\r\n\\").XMany().Text()
+            from text in Parse.CharExcept("\r\n\\").XAtLeastOnce().Text()
             select new StringValue(text, text);
 
         private static readonly Parser<StringValue> ValueComponentParser = ValueCharsParser

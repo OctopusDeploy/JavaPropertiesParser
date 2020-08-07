@@ -248,6 +248,57 @@ namespace JavaPropertiesParser.Tests
         }
 
         [Test]
+        public void CanParseAKeyWithNeitherSeparatorNorValue()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("key-with-neither-separator-nor-value.properties");
+            var parsed = Parser.Parse(input);
+        
+            var expected = Doc(
+                Pair(
+                    Key("key", "key"),
+                    null, //Separator(""),
+                    null //Value("", "")
+                )
+            );
+        
+            parsed.Should().Be(expected);
+        }
+
+        [Test]
+        public void CanParseAKeyWithSeparatorButNoValue()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("key-with-separator-but-no-value.properties");
+            var parsed = Parser.Parse(input);
+        
+            var expected = Doc(
+                Pair(
+                    Key("key", "key"),
+                    Separator(":"),
+                    null //Value("", "")
+                )
+            );
+        
+            parsed.Should().Be(expected);
+        }
+
+        [Test]
+        public void CanParseAnEmptyKey()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("empty-key.properties");
+            var parsed = Parser.Parse(input);
+        
+            var expected = Doc(
+                Pair(
+                    null, //Key(""),
+                    Separator(":"),
+                    Value("value")
+                )
+            );
+        
+            parsed.Should().Be(expected);
+        }
+
+        [Test]
         public void CanParseWhitespaceBeforeAComment()
         {
             var input = ResourceUtils.ReadEmbeddedResource("whitespace-before-comment.properties");
