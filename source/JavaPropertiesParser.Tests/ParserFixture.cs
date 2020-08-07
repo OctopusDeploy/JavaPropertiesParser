@@ -190,5 +190,23 @@ namespace JavaPropertiesParser.Tests
         
             parsed.Should().Be(expected);
         }
+        
+        [Test]
+        public void CanParseAValueWithAUnicodeEscape()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("value-with-unicode-escape.properties");
+            var parsed = Parser.Parse(input);
+        
+            var expected = Doc(
+                Pair(
+                    Key("key"),
+                    Separator(":"),
+                    Value("valũe", "val\\u0169e")
+                )
+            );
+        
+            parsed.Should().Be(expected);
+        }
+
     }
 }

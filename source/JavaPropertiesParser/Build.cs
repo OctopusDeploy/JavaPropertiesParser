@@ -35,9 +35,14 @@ namespace JavaPropertiesParser
             return new KeyExpression(new StringValue(logicalText, encodedText));
         }
 
-        public static ValueExpression Value(string text)
+        public static ValueExpression Value(string simpleText)
         {
-            return new ValueExpression(text);
+            return new ValueExpression(new StringValue(simpleText, simpleText));
+        }
+        
+        public static ValueExpression Value(string logicalText, string encodedText)
+        {
+            return new ValueExpression(new StringValue(logicalText, encodedText));
         }
         
         public static SeparatorExpression Separator(string text)

@@ -1,22 +1,24 @@
-﻿namespace JavaPropertiesParser.Expressions
+﻿using JavaPropertiesParser.Utils;
+
+namespace JavaPropertiesParser.Expressions
 {
     public class ValueExpression : IExpression
     {
-        public ValueExpression(string text)
+        public ValueExpression(StringValue text)
         {
             Text = text;
         }
 
-        public string Text { get; }
+        public StringValue Text { get; }
 
         public override string ToString()
         {
-            return Text;
+            return Text.EncodedValue;
         }
 
         protected bool Equals(ValueExpression other)
         {
-            return Text == other.Text;
+            return Text.Equals(other.Text);
         }
 
         public override bool Equals(object obj)
