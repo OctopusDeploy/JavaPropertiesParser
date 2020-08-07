@@ -59,7 +59,7 @@ namespace JavaPropertiesParser.Tests
         }
 
         [Test]
-        public void CanParseAKeyWithAColonSeparatorAndValue()
+        public void CanParseAColonSeparator()
         {
             var input = ResourceUtils.ReadEmbeddedResource("key-with-colon-separator.properties");
             var parsed = Parser.Parse(input);
@@ -76,7 +76,7 @@ namespace JavaPropertiesParser.Tests
         }
 
         [Test]
-        public void CanParseAKeyWithASpaceSeparatorAndValue()
+        public void CanParseASpaceSeparator()
         {
             var input = ResourceUtils.ReadEmbeddedResource("key-with-space-separator.properties");
             var parsed = Parser.Parse(input);
@@ -93,7 +93,7 @@ namespace JavaPropertiesParser.Tests
         }
 
         [Test]
-        public void CanParseAKeyWithAnEqualsSeparatorAndValue()
+        public void CanParseAnEqualsSeparator()
         {
             var input = ResourceUtils.ReadEmbeddedResource("key-with-equals-separator.properties");
             var parsed = Parser.Parse(input);
@@ -106,6 +106,74 @@ namespace JavaPropertiesParser.Tests
                 )
             );
         
+            parsed.Should().Be(expected);
+        }
+
+        [Test]
+        public void CanParseAnEqualsSeparatorAndLeadingWhitespace()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("key-with-equals-separator-and-leading-whitespace.properties");
+            var parsed = Parser.Parse(input);
+        
+            var expected = Doc(
+                Pair(
+                    Key("key"),
+                    Separator(" ="),
+                    Value("value")
+                )
+            );
+        
+            parsed.Should().Be(expected);
+        }
+
+        [Test]
+        public void CanParseAnEqualsSeparatorWithTrailingWhitespace()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("key-with-equals-separator-and-trailing-whitespace.properties");
+            var parsed = Parser.Parse(input);
+        
+            var expected = Doc(
+                Pair(
+                    Key("key"),
+                    Separator("= "),
+                    Value("value")
+                )
+            );
+        
+            parsed.Should().Be(expected);
+        }
+
+        [Test]
+        public void CanParseATabSeparator()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("key-with-tab-separator.properties");
+            var parsed = Parser.Parse(input);
+        
+            var expected = Doc(
+                Pair(
+                    Key("key"),
+                    Separator("\t"),
+                    Value("value")
+                )
+            );
+        
+            parsed.Should().Be(expected);
+        }
+
+        [Test]
+        public void CanParseASeparatorWithMultipleWhitespaceCharacters()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("key-with-multi-whitespace-separator.properties");
+            var parsed = Parser.Parse(input);
+        
+            var expected = Doc(
+                Pair(
+                    Key("key"),
+                    Separator(" 	"),
+                    Value("value")
+                )
+            );
+
             parsed.Should().Be(expected);
         }
 

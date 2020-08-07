@@ -6,7 +6,9 @@ namespace JavaPropertiesParser.Parsers
     public static class Separators
     {
         public static readonly Parser<SeparatorExpression> Parser =
-            from text in Parse.Chars(":= \t")
-            select new SeparatorExpression(text.ToString());
+            from leading in Parse.Chars(" \t").Many().Text()
+            from text in Parse.Chars(":=").Optional()
+            from trailing in Parse.Chars(" \t").Many().Text()
+            select new SeparatorExpression(leading + (text.IsDefined ? text.Get().ToString() : "") + trailing);
     }
 }
