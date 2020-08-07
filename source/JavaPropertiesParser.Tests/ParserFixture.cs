@@ -57,7 +57,7 @@ namespace JavaPropertiesParser.Tests
         
             parsed.Should().Be(expected);
         }
-        
+
         [Test]
         public void CanParseAKeyWithAColonSeparatorAndValue()
         {
@@ -74,7 +74,7 @@ namespace JavaPropertiesParser.Tests
         
             parsed.Should().Be(expected);
         }
-        
+
         [Test]
         public void CanParseAKeyWithASpaceSeparatorAndValue()
         {
@@ -91,7 +91,7 @@ namespace JavaPropertiesParser.Tests
         
             parsed.Should().Be(expected);
         }
-        
+
         [Test]
         public void CanParseAKeyWithAnEqualsSeparatorAndValue()
         {
@@ -108,7 +108,7 @@ namespace JavaPropertiesParser.Tests
         
             parsed.Should().Be(expected);
         }
-        
+
         [Test]
         public void CanParseAKeyWithALogicalNewLine()
         {
@@ -125,7 +125,7 @@ namespace JavaPropertiesParser.Tests
         
             parsed.Should().Be(expected);
         }
-        
+
         [Test]
         public void CanParseAKeyWithAPhysicalNewLine()
         {
@@ -142,7 +142,7 @@ namespace JavaPropertiesParser.Tests
         
             parsed.Should().Be(expected);
         }
-        
+
         [Test]
         public void CanParseAKeyWithAPhysicalNewLineAndIndentation()
         {
@@ -159,7 +159,7 @@ namespace JavaPropertiesParser.Tests
         
             parsed.Should().Be(expected);
         }
-        
+
         [Test]
         public void CanParseAKeyWithAUnicodeEscape()
         {
@@ -176,7 +176,7 @@ namespace JavaPropertiesParser.Tests
         
             parsed.Should().Be(expected);
         }
-        
+
         [Test]
         public void CanParseWhitespaceBeforeAComment()
         {
@@ -190,7 +190,7 @@ namespace JavaPropertiesParser.Tests
         
             parsed.Should().Be(expected);
         }
-        
+
         [Test]
         public void CanParseAValueWithAUnicodeEscape()
         {
