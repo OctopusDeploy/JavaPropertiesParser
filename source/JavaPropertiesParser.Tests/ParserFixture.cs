@@ -171,5 +171,19 @@ namespace JavaPropertiesParser.Tests
         
             parsed.Should().Be(expected);
         }
+
+        [Test]
+        public void CanParseWhitespaceBeforeAComment()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("whitespace-before-comment.properties");
+            var parsed = Parser.Parse(input);
+
+            var expected = Doc(
+                Whitespace("   "),
+                HashComment(" This comment has leading whitespace")
+            );
+        
+            parsed.Should().Be(expected);
+        }
     }
 }
