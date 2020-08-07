@@ -4,6 +4,7 @@ using FluentAssertions;
 using JavaPropertiesParser.Tests.TestUtils;
 using JavaPropertiesParser.Tokenization;
 using NUnit.Framework;
+using Superpower;
 using Superpower.Model;
 
 namespace JavaPropertiesParser.Tests
@@ -31,6 +32,14 @@ namespace JavaPropertiesParser.Tests
             RunTest(inputResourceName, tokens => tokens.Should().SatisfyRespectively(expectations));
         }
 
+        private void RunTestOnInvalidInput(string inputResourceName, Action<Func<TokenList<TokenType>>> invocationAssertions)
+        {
+            var input = ResourceUtils.ReadEmbeddedResource(inputResourceName);
+            var tokenizer = new PropertiesFileTokenizer();
+            
+            invocationAssertions(tokenizer.Invoking(t => t.Tokenize(input)));
+        }
+        
         [Test]
         public void CanParseExclamationComment()
         {
@@ -224,6 +233,16 @@ namespace JavaPropertiesParser.Tests
                 (TokenType.KeyChars, "y"),
                 (TokenType.Separator, ":"),
                 (TokenType.ValueChars, "value")
+            );
+        }
+
+        [Test]
+        public void ThrowsParseExceptionOnWrongNumberOfDigitsInUnicodeEscape()
+        {
+            RunTestOnInvalidInput("invalid-unicode-escape.properties", invocation => invocation
+                .Should()
+                .Throw<ParseException>()
+                .WithMessage("unexpected end of input, expected hex digit at position 9 (line 1, column 10)")
             );
         }
     }

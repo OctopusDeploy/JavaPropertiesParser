@@ -46,7 +46,14 @@ namespace JavaPropertiesParser.Tokenization
                 }
                 else
                 {
-                    yield return Result.Empty<TokenType>(remainder);
+                    var err = parseResult.FormatErrorMessageFragment();
+                    var pos = parseResult.ErrorPosition;
+                    var message = $"{err} at position {pos}";
+                    
+                    throw new ParseException(
+                        message,
+                        pos
+                    );
                 }
             }
         }
@@ -83,5 +90,7 @@ namespace JavaPropertiesParser.Tokenization
                     throw new ArgumentOutOfRangeException();
             }
         }
+        
+
     }
 }

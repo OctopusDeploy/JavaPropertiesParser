@@ -37,6 +37,7 @@
       <EmbeddedResource Include="Resources\empty.properties" />
       <None Remove="Resources\multiple-pairs-and-comments.properties" />
       <EmbeddedResource Include="Resources\multiple-pairs-and-comments.properties" />
+      <EmbeddedResource Include="Resources\invalid-unicode-escape.properties" />
     </ItemGroup>
 
     <ItemGroup>

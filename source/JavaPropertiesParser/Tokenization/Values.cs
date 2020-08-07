@@ -5,28 +5,32 @@ namespace JavaPropertiesParser.Tokenization
 {
     public static class Values
     {
-        private static readonly TextParser<TokenType> EscapeSequenceParser =
-            from slash in Character.EqualTo('\\')
-            from escaped in Character.ExceptIn('\r', '\n', 'u')
-            select TokenType.ValueEscapeSequence;
-
         private static readonly TextParser<TokenType> ValueCharParser = Span
-            .WithAll(c => c != '\\' && c != '\r' && c != '\r')
+            .WithAll(c => c != '\\' && c != '\r' && c != '\n')
             .Value(TokenType.ValueChars);
 
+        private static readonly TextParser<TokenType> LogicalNewLineParser = Character
+            .In('r', 'n')
+            .Value(TokenType.ValueEscapeSequence);
+        
         private static readonly TextParser<TokenType> PhysicalNewLineParser =
-            from slash in Character.EqualTo('\\')
             from newline in Common.NewLineParser
             from indentation in Common.WhitespaceCharacterParser.Many()
             select TokenType.ValuePhysicalNewLine;
 
-        private static readonly TextParser<TokenType> UnicodeEscapeSequenceParser = Common
-            .UnicodeEscapeSequenceParser
-            .Value(TokenType.ValueUnicodeEscapeSequence);
+        private static readonly TextParser<TokenType> UnicodeEscapeSequenceParser =             
+            from start in Character.EqualTo('u')
+            from digits in Character.HexDigit.Repeat(4)
+            select TokenType.ValueUnicodeEscapeSequence;
+
+        private static readonly TextParser<TokenType> EscapedParser =
+            from slash in Character.EqualTo('\\')
+            from parsed in LogicalNewLineParser
+                .Or(PhysicalNewLineParser)
+                .Or(UnicodeEscapeSequenceParser)
+            select parsed;
 
         public static readonly TextParser<TokenType> Parser = ValueCharParser
-            .Or(EscapeSequenceParser.Try())
-            .Or(UnicodeEscapeSequenceParser.Try())
-            .Or(PhysicalNewLineParser);
+            .Or(EscapedParser);
     }
 }
