@@ -241,5 +241,22 @@ namespace JavaPropertiesParser.Tests
         
             parsed.Should().Be(expected);
         }
+
+        [Test]
+        public void CanParseAValueWithAPhysicalNewLineAndIndentation()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("value-with-physical-newline-and-indentation.properties");
+            var parsed = Parser.Parse(input);
+        
+            var expected = Doc(
+                Pair(
+                    Key("key"),
+                    Separator(":"),
+                    Value("value", "val\\\r\n   ue")
+                )
+            );
+
+            parsed.Should().Be(expected);
+        }
     }
 }

@@ -25,6 +25,7 @@
       <EmbeddedResource Include="Resources\key-with-physical-newline.properties" />
       <EmbeddedResource Include="Resources\key-with-space-separator.properties" />
       <EmbeddedResource Include="Resources\value-with-logical-newline.properties" />
+      <EmbeddedResource Include="Resources\value-with-physical-newline-and-indentation.properties" />
       <EmbeddedResource Include="Resources\value-with-physical-newline.properties" />
       <EmbeddedResource Include="Resources\value-with-unicode-escape.properties" />
       <EmbeddedResource Include="Resources\whitespace-before-comment.properties" />
