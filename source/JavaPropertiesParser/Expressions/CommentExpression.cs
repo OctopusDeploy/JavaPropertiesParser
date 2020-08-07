@@ -1,28 +1,25 @@
-﻿using Superpower.Model;
-
-namespace JavaPropertiesParser.Expressions
+﻿namespace JavaPropertiesParser.Expressions
 {
     public class CommentExpression : ITopLevelExpression
     {
-        public CommentExpression(Token<TokenType> token) : this(token.Span.ToStringValue())
+        public CommentExpression(char delimiter, string text)
         {
-        }
-
-        public CommentExpression(string content)
-        {
-            Content = content;
+            Delimiter = delimiter;
+            Text = text;
         }
         
-        public string Content { get; }
-
-        public override string ToString()
-        {
-            return Content;
-        }
+        public char Delimiter { get; }
+        
+        public string Text { get; }
 
         protected bool Equals(CommentExpression other)
         {
-            return Content == other.Content;
+            return Delimiter == other.Delimiter && Text == other.Text;
+        }
+
+        public override string ToString()
+        {
+            return Delimiter + Text;
         }
 
         public override bool Equals(object obj)
@@ -35,7 +32,10 @@ namespace JavaPropertiesParser.Expressions
 
         public override int GetHashCode()
         {
-            return Content != null ? Content.GetHashCode() : 0;
+            unchecked
+            {
+                return (Delimiter.GetHashCode() * 397) ^ (Text != null ? Text.GetHashCode() : 0);
+            }
         }
     }
 }

@@ -1,86 +1,50 @@
 ﻿using JavaPropertiesParser.Expressions;
-using Superpower.Model;
 
 namespace JavaPropertiesParser
 {
     public static class Build
     {
-        public static PropertiesDocument Doc(params ITopLevelExpression[] expressions)
+        public static Document Doc(params ITopLevelExpression[] expressions)
         {
-            return new PropertiesDocument(expressions);
-        }
-
-        public static CommentExpression HashComment(string content)
-        {
-            return new CommentExpression("#" + content);
-        }
-
-        public static CommentExpression ExclamationComment(string content)
-        {
-            return new CommentExpression("!" + content);
+            return new Document(expressions);
         }
         
-        public static CommentExpression BangComment(string content) => ExclamationComment(content);
-
-        public static WhiteSpaceExpression Whitespace(string content)
+        public static CommentExpression HashComment(string text)
         {
-            return new WhiteSpaceExpression(content);
+            return new CommentExpression('#', text);
         }
         
-        public static KeyValuePairExpression Pair(KeyExpression keyExpression, SeparatorExpression separatorExpression = null, ValueExpression valueExpression = null)
+        public static CommentExpression BangComment(string text)
         {
-            return new KeyValuePairExpression(keyExpression, separatorExpression, valueExpression);
-        }
-
-        public static KeyExpression Key(string serializableValue)
-        {
-            return new KeyExpression(KeyChars(serializableValue));
-        }
-
-        public static KeyExpression Key(params Token<TokenType>[] tokens)
-        {
-            return new KeyExpression(tokens);
-        }
-
-        public static SeparatorExpression Separator(string serializableValue)
-        {
-            return new SeparatorExpression(Token(TokenType.Separator, serializableValue));
-        }
-
-        public static ValueExpression Value(string serializableValue)
-        {
-            return new ValueExpression(Token(TokenType.ValueChars, serializableValue));
-        }
-
-        public static ValueExpression Value(params Token<TokenType>[] components)
-        {
-            return new ValueExpression(components);
+            return new CommentExpression('!', text);
         }
         
-        private static Token<TokenType> Token(TokenType type, string serializableValue)
+        public static WhitespaceExpression Whitespace(string text)
         {
-            return new Token<TokenType>(type, new TextSpan(serializableValue));
+            return new WhitespaceExpression(text);
         }
 
-        public static Token<TokenType> KeyChars(string serializableValue)
+        public static KeyExpression Key(string text)
         {
-            return Token(TokenType.KeyChars, serializableValue);
+            return new KeyExpression(text);
         }
 
-        public static Token<TokenType> KeyEscapeSequence(string serializableValue)
+        public static ValueExpression Value(string text)
         {
-            return Token(TokenType.KeyEscapeSequence, serializableValue);
+            return new ValueExpression(text);
+        }
+        
+        public static SeparatorExpression Separator(string text)
+        {
+            return new SeparatorExpression(text);
         }
 
-        public static Token<TokenType> KeyPhysicalNewLine(string serializableValue)
+        public static KeyValuePairExpression Pair(
+            KeyExpression key, 
+            SeparatorExpression separator,
+            ValueExpression value)
         {
-            return Token(TokenType.KeyPhysicalNewLine, serializableValue);
+            return new KeyValuePairExpression(key, separator, value);
         }
-
-        public static Token<TokenType> ValueChars(string serializableValue)
-        {
-            return Token(TokenType.ValueChars, serializableValue);
-        }
-
     }
 }

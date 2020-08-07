@@ -1,30 +1,14 @@
-﻿using System;
-using JavaPropertiesParser.Expressions;
-using JavaPropertiesParser.Parsing;
-using JavaPropertiesParser.Tokenization;
+﻿using JavaPropertiesParser.Expressions;
+using JavaPropertiesParser.Parsers;
+using Sprache;
 
 namespace JavaPropertiesParser
 {
     public static class Parser
     {
-        public static PropertiesDocument Parse(string input)
+        public static Document Parse(string input)
         {
-            var tokenizer = new PropertiesFileTokenizer();
-            var tokenizeResult = tokenizer.TryTokenize(input);
-            if (!tokenizeResult.HasValue)
-            {
-                // TODO: error handling
-                throw new NotImplementedException();
-            }
-
-            var parseResult = PropertiesFileParser.Parse(tokenizeResult.Value);
-            if (!parseResult.HasValue)
-            {
-                // TODO: error handling
-                throw new NotImplementedException();
-            }
-
-            return parseResult.Value;
+            return Documents.Parser.Parse(input);
         }
     }
 }

@@ -1,12 +1,12 @@
 ﻿namespace JavaPropertiesParser.Expressions
 {
-    public class ValueExpression : IExpression
+    public class WhitespaceExpression : ITopLevelExpression
     {
-        public ValueExpression(string text)
+        public WhitespaceExpression(string text)
         {
             Text = text;
         }
-
+        
         public string Text { get; }
 
         public override string ToString()
@@ -14,7 +14,7 @@
             return Text;
         }
 
-        protected bool Equals(ValueExpression other)
+        protected bool Equals(WhitespaceExpression other)
         {
             return Text == other.Text;
         }
@@ -24,7 +24,7 @@
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
-            return Equals((ValueExpression) obj);
+            return Equals((WhitespaceExpression) obj);
         }
 
         public override int GetHashCode()

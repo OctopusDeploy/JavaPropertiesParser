@@ -1,39 +1,35 @@
-﻿using System.Linq;
-using Superpower.Model;
-
-namespace JavaPropertiesParser.Expressions
+﻿namespace JavaPropertiesParser.Expressions
 {
     public class KeyExpression : IExpression
     {
-        public KeyExpression(params Token<TokenType>[] parts)
+        public KeyExpression(string text)
         {
-            var values = parts.Select(KeyComponents.GetStringValue);
-            Value = StringValues.Join(values);
+            Text = text;
         }
-
-        public StringValue Value { get; }
+        
+        public string Text { get; }
 
         public override string ToString()
         {
-            return Value.SerializableValue;
+            return Text;
         }
 
         protected bool Equals(KeyExpression other)
         {
-            return Equals(Value, other.Value);
+            return Text == other.Text;
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
+            if (obj.GetType() != this.GetType()) return false;
             return Equals((KeyExpression) obj);
         }
 
         public override int GetHashCode()
         {
-            return Value != null ? Value.GetHashCode() : 0;
+            return (Text != null ? Text.GetHashCode() : 0);
         }
     }
 }

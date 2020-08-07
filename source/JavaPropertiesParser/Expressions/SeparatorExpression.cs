@@ -1,24 +1,22 @@
-﻿using Superpower.Model;
-
-namespace JavaPropertiesParser.Expressions
+﻿namespace JavaPropertiesParser.Expressions
 {
     public class SeparatorExpression : IExpression
     {
-        public SeparatorExpression(Token<TokenType> token)
+        public SeparatorExpression(string text)
         {
-            Content = token.ToStringValue();
+            Text = text;
         }
-        
-        public string Content { get; }
+
+        public string Text { get; }
 
         public override string ToString()
         {
-            return Content;
+            return Text;
         }
 
         protected bool Equals(SeparatorExpression other)
         {
-            return Content == other.Content;
+            return Text == other.Text;
         }
 
         public override bool Equals(object obj)
@@ -31,7 +29,7 @@ namespace JavaPropertiesParser.Expressions
 
         public override int GetHashCode()
         {
-            return Content != null ? Content.GetHashCode() : 0;
+            return Text != null ? Text.GetHashCode() : 0;
         }
     }
 }
