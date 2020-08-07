@@ -208,5 +208,22 @@ namespace JavaPropertiesParser.Tests
             parsed.Should().Be(expected);
         }
 
+        [Test]
+        public void CanParseAValueWithALogicalNewLine()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("value-with-logical-newline.properties");
+            var parsed = Parser.Parse(input);
+        
+            var expected = Doc(
+                Pair(
+                    Key("key"),
+                    Separator(":"),
+                    Value("val\r\nue", "val\\r\\nue")
+                )
+            );
+        
+            parsed.Should().Be(expected);
+        }
+
     }
 }
