@@ -75,115 +75,103 @@ namespace JavaPropertiesParser.Tests
             parsed.Should().Be(expected);
         }
         
-        // [Test]
-        // public void CanParseAKeyWithASpaceSeparatorAndValue()
-        // {
-        //     var input = ResourceUtils.ReadEmbeddedResource("key-with-space-separator.properties");
-        //     var parsed = Parser.Parse(input);
-        //
-        //     var expected = Doc(
-        //         Pair(
-        //             Key("key"),
-        //             Separator(" "),
-        //             Value("value")
-        //         )
-        //     );
-        //
-        //     parsed.Should().Be(expected);
-        // }
-        //
-        // [Test]
-        // public void CanParseAKeyWithAnEqualsSeparatorAndValue()
-        // {
-        //     var input = ResourceUtils.ReadEmbeddedResource("key-with-equals-separator.properties");
-        //     var parsed = Parser.Parse(input);
-        //
-        //     var expected = Doc(
-        //         Pair(
-        //             Key("key"),
-        //             Separator("="),
-        //             Value("value")
-        //         )
-        //     );
-        //
-        //     parsed.Should().Be(expected);
-        // }
-        //
-        // [Test]
-        // public void CanParseAKeyWithALogicalNewLine()
-        // {
-        //     var input = ResourceUtils.ReadEmbeddedResource("key-with-logical-newline.properties");
-        //     var parsed = Parser.Parse(input);
-        //
-        //     var expected = Doc(
-        //         Pair(
-        //             Key(
-        //                 KeyChars("key"),
-        //                 KeyEscapeSequence("\\n"),
-        //                 KeyChars("1")
-        //             ),
-        //             Separator(":"),
-        //             Value("value")
-        //         )
-        //     );
-        //
-        //     parsed.Should().Be(expected);
-        // }
-        //
-        // [Test]
-        // public void CanParseAKeyWithAPhysicalNewLine()
-        // {
-        //     var input = ResourceUtils.ReadEmbeddedResource("key-with-physical-newline.properties");
-        //     var parsed = Parser.Parse(input);
-        //
-        //     var expected = Doc(
-        //         Pair(
-        //             Key(
-        //                 KeyChars("ke"),
-        //                 KeyPhysicalNewLine("\\\r\n"),
-        //                 KeyChars("y")
-        //             ),
-        //             Separator(":"),
-        //             Value("value")
-        //         )
-        //     );
-        //
-        //     parsed.Should().Be(expected);
-        // }
-        //
-        // [Test]
-        // public void CanParseAKeyWithAPhysicalNewLineAndIndentation()
-        // {
-        //     var input = ResourceUtils.ReadEmbeddedResource("key-with-physical-newline-and-indentation.properties");
-        //     var parsed = Parser.Parse(input);
-        //
-        //     var expected = Doc(
-        //         Pair(
-        //             Key(
-        //                 KeyChars("ke"),
-        //                 KeyPhysicalNewLine("\\\r\n   "),
-        //                 KeyChars("y")
-        //             ),
-        //             Separator(":"),
-        //             Value("value")
-        //         )
-        //     );
-        //
-        //     parsed.Should().Be(expected);
-        // }
-        //
-        // [Test]
-        // public void CanParseWhitespaceBeforeAComment()
-        // {
-        //     var input = ResourceUtils.ReadEmbeddedResource("whitespace-before-comment.properties");
-        //     var parsed = Parser.Parse(input);
-        //
-        //     var expected = Doc(
-        //         Whitespace("   "),
-        //         HashComment(" This comment has leading whitespace")
-        //     );
-        //
-        //     parsed.Should().Be(expected);
-        // }
+        [Test]
+        public void CanParseAKeyWithASpaceSeparatorAndValue()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("key-with-space-separator.properties");
+            var parsed = Parser.Parse(input);
+        
+            var expected = Doc(
+                Pair(
+                    Key("key"),
+                    Separator(" "),
+                    Value("value")
+                )
+            );
+        
+            parsed.Should().Be(expected);
+        }
+        
+        [Test]
+        public void CanParseAKeyWithAnEqualsSeparatorAndValue()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("key-with-equals-separator.properties");
+            var parsed = Parser.Parse(input);
+        
+            var expected = Doc(
+                Pair(
+                    Key("key"),
+                    Separator("="),
+                    Value("value")
+                )
+            );
+        
+            parsed.Should().Be(expected);
+        }
+        
+        [Test]
+        public void CanParseAKeyWithALogicalNewLine()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("key-with-logical-newline.properties");
+            var parsed = Parser.Parse(input);
+        
+            var expected = Doc(
+                Pair(
+                    Key("key\n1", "key\\n1"),
+                    Separator(":"),
+                    Value("value")
+                )
+            );
+        
+            parsed.Should().Be(expected);
+        }
+        
+        [Test]
+        public void CanParseAKeyWithAPhysicalNewLine()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("key-with-physical-newline.properties");
+            var parsed = Parser.Parse(input);
+        
+            var expected = Doc(
+                Pair(
+                    Key("key", "ke\\\r\ny"),
+                    Separator(":"),
+                    Value("value")
+                )
+            );
+        
+            parsed.Should().Be(expected);
+        }
+        
+        [Test]
+        public void CanParseAKeyWithAPhysicalNewLineAndIndentation()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("key-with-physical-newline-and-indentation.properties");
+            var parsed = Parser.Parse(input);
+        
+            var expected = Doc(
+                Pair(
+                    Key("key", "ke\\\r\n   y"),
+                    Separator(":"),
+                    Value("value")
+                )
+            );
+        
+            parsed.Should().Be(expected);
+        }
+        
+        [Test]
+        public void CanParseWhitespaceBeforeAComment()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("whitespace-before-comment.properties");
+            var parsed = Parser.Parse(input);
+        
+            var expected = Doc(
+                Whitespace("   "),
+                HashComment(" This comment has leading whitespace")
+            );
+        
+            parsed.Should().Be(expected);
+        }
     }
 }

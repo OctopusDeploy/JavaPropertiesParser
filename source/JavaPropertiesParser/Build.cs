@@ -1,4 +1,5 @@
 ﻿using JavaPropertiesParser.Expressions;
+using JavaPropertiesParser.Utils;
 
 namespace JavaPropertiesParser
 {
@@ -24,9 +25,14 @@ namespace JavaPropertiesParser
             return new WhitespaceExpression(text);
         }
 
-        public static KeyExpression Key(string text)
+        public static KeyExpression Key(string simpleText)
         {
-            return new KeyExpression(text);
+            return new KeyExpression(new StringValue(simpleText, simpleText));
+        }
+
+        public static KeyExpression Key(string logicalText, string encodedText)
+        {
+            return new KeyExpression(new StringValue(logicalText, encodedText));
         }
 
         public static ValueExpression Value(string text)

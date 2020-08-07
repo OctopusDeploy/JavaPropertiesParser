@@ -1,35 +1,37 @@
-﻿namespace JavaPropertiesParser.Expressions
+﻿using JavaPropertiesParser.Utils;
+
+namespace JavaPropertiesParser.Expressions
 {
     public class KeyExpression : IExpression
     {
-        public KeyExpression(string text)
+        public KeyExpression(StringValue text)
         {
             Text = text;
         }
         
-        public string Text { get; }
+        public StringValue Text { get; }
 
         public override string ToString()
         {
-            return Text;
+            return Text.EncodedValue;
         }
 
         protected bool Equals(KeyExpression other)
         {
-            return Text == other.Text;
+            return Text.Equals(other.Text);
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((KeyExpression) obj);
         }
 
         public override int GetHashCode()
         {
-            return (Text != null ? Text.GetHashCode() : 0);
+            return Text != null ? Text.GetHashCode() : 0;
         }
     }
 }
