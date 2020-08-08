@@ -14,23 +14,17 @@ namespace JavaPropertiesParser.Utils
         public static T[] Mutate<T>(this T[] source, Func<T, T> mutator)
         {
             var anyItemHasChanged = false;
-            T[] newArray = null;
+            var newArray = new T[source.Length];
             
             for (var i = 0; i < source.Length; i++)
             {
                 var item = source[i];
                 var mutated = mutator(item);
-                if (!anyItemHasChanged && !ReferenceEquals(item, mutated))
+                newArray[i] = mutated;
+                
+                if (!ReferenceEquals(item, mutated))
                 {
-                    newArray = new T[source.Length];
-                    Array.Copy(source, 0, newArray, 0, i);
-                    
-                    newArray[i] = mutated;
                     anyItemHasChanged = true;
-                }
-                else if (anyItemHasChanged)
-                {
-                    newArray[i] = mutated;
                 }
             }
 
