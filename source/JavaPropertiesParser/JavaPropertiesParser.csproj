@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard1.0</TargetFramework>
         <AssemblyName>JavaPropertiesParser</AssemblyName>
         <RootNamespace>JavaPropertiesParser</RootNamespace>
+        <TargetFrameworks>net40;netstandard1.0</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>
