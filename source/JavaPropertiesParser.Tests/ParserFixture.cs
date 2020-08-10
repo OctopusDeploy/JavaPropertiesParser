@@ -30,7 +30,7 @@ namespace JavaPropertiesParser.Tests
             var expected = Doc(
                 HashComment(" This is a comment")
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -43,7 +43,7 @@ namespace JavaPropertiesParser.Tests
             var expected = Doc(
                 BangComment(" This is a comment")
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -56,7 +56,7 @@ namespace JavaPropertiesParser.Tests
             var expected = Doc(
                 Whitespace("\r\n")
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -65,7 +65,7 @@ namespace JavaPropertiesParser.Tests
         {
             var input = ResourceUtils.ReadEmbeddedResource("key-with-colon-separator.properties");
             var parsed = Parser.Parse(input);
-        
+
             var expected = Doc(
                 Pair(
                     Key("key"),
@@ -73,7 +73,7 @@ namespace JavaPropertiesParser.Tests
                     Value("value")
                 )
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -82,7 +82,7 @@ namespace JavaPropertiesParser.Tests
         {
             var input = ResourceUtils.ReadEmbeddedResource("key-with-space-separator.properties");
             var parsed = Parser.Parse(input);
-        
+
             var expected = Doc(
                 Pair(
                     Key("key"),
@@ -90,7 +90,7 @@ namespace JavaPropertiesParser.Tests
                     Value("value")
                 )
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -99,7 +99,7 @@ namespace JavaPropertiesParser.Tests
         {
             var input = ResourceUtils.ReadEmbeddedResource("key-with-equals-separator.properties");
             var parsed = Parser.Parse(input);
-        
+
             var expected = Doc(
                 Pair(
                     Key("key"),
@@ -107,7 +107,7 @@ namespace JavaPropertiesParser.Tests
                     Value("value")
                 )
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -116,7 +116,7 @@ namespace JavaPropertiesParser.Tests
         {
             var input = ResourceUtils.ReadEmbeddedResource("key-with-equals-separator-and-leading-whitespace.properties");
             var parsed = Parser.Parse(input);
-        
+
             var expected = Doc(
                 Pair(
                     Key("key"),
@@ -124,7 +124,7 @@ namespace JavaPropertiesParser.Tests
                     Value("value")
                 )
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -133,7 +133,7 @@ namespace JavaPropertiesParser.Tests
         {
             var input = ResourceUtils.ReadEmbeddedResource("key-with-equals-separator-and-trailing-whitespace.properties");
             var parsed = Parser.Parse(input);
-        
+
             var expected = Doc(
                 Pair(
                     Key("key"),
@@ -141,7 +141,7 @@ namespace JavaPropertiesParser.Tests
                     Value("value")
                 )
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -150,7 +150,7 @@ namespace JavaPropertiesParser.Tests
         {
             var input = ResourceUtils.ReadEmbeddedResource("key-with-tab-separator.properties");
             var parsed = Parser.Parse(input);
-        
+
             var expected = Doc(
                 Pair(
                     Key("key"),
@@ -158,7 +158,7 @@ namespace JavaPropertiesParser.Tests
                     Value("value")
                 )
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -167,7 +167,7 @@ namespace JavaPropertiesParser.Tests
         {
             var input = ResourceUtils.ReadEmbeddedResource("key-with-multi-whitespace-separator.properties");
             var parsed = Parser.Parse(input);
-        
+
             var expected = Doc(
                 Pair(
                     Key("key"),
@@ -184,7 +184,7 @@ namespace JavaPropertiesParser.Tests
         {
             var input = ResourceUtils.ReadEmbeddedResource("key-with-logical-newline.properties");
             var parsed = Parser.Parse(input);
-        
+
             var expected = Doc(
                 Pair(
                     Key("key\n1", "key\\n1"),
@@ -192,7 +192,7 @@ namespace JavaPropertiesParser.Tests
                     Value("value")
                 )
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -201,7 +201,7 @@ namespace JavaPropertiesParser.Tests
         {
             var input = ResourceUtils.ReadEmbeddedResource("key-with-physical-newline.properties");
             var parsed = Parser.Parse(input);
-        
+
             var expected = Doc(
                 Pair(
                     Key("key", "ke\\\r\ny"),
@@ -209,7 +209,7 @@ namespace JavaPropertiesParser.Tests
                     Value("value")
                 )
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -218,7 +218,7 @@ namespace JavaPropertiesParser.Tests
         {
             var input = ResourceUtils.ReadEmbeddedResource("key-with-physical-newline-and-indentation.properties");
             var parsed = Parser.Parse(input);
-        
+
             var expected = Doc(
                 Pair(
                     Key("key", "ke\\\r\n   y"),
@@ -226,7 +226,7 @@ namespace JavaPropertiesParser.Tests
                     Value("value")
                 )
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -235,7 +235,7 @@ namespace JavaPropertiesParser.Tests
         {
             var input = ResourceUtils.ReadEmbeddedResource("key-with-unicode-escape.properties");
             var parsed = Parser.Parse(input);
-        
+
             var expected = Doc(
                 Pair(
                     Key("keyὅ", "key\\u1f45"),
@@ -243,7 +243,7 @@ namespace JavaPropertiesParser.Tests
                     Value("value")
                 )
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -252,7 +252,7 @@ namespace JavaPropertiesParser.Tests
         {
             var input = ResourceUtils.ReadEmbeddedResource("key-with-neither-separator-nor-value.properties");
             var parsed = Parser.Parse(input);
-        
+
             var expected = Doc(
                 Pair(
                     Key("key", "key"),
@@ -260,7 +260,7 @@ namespace JavaPropertiesParser.Tests
                     null //Value("", "")
                 )
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -269,7 +269,7 @@ namespace JavaPropertiesParser.Tests
         {
             var input = ResourceUtils.ReadEmbeddedResource("key-with-separator-but-no-value.properties");
             var parsed = Parser.Parse(input);
-        
+
             var expected = Doc(
                 Pair(
                     Key("key", "key"),
@@ -277,7 +277,7 @@ namespace JavaPropertiesParser.Tests
                     null //Value("", "")
                 )
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -286,7 +286,7 @@ namespace JavaPropertiesParser.Tests
         {
             var input = ResourceUtils.ReadEmbeddedResource("empty-key.properties");
             var parsed = Parser.Parse(input);
-        
+
             var expected = Doc(
                 Pair(
                     null, //Key(""),
@@ -294,7 +294,7 @@ namespace JavaPropertiesParser.Tests
                     Value("value")
                 )
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -303,12 +303,12 @@ namespace JavaPropertiesParser.Tests
         {
             var input = ResourceUtils.ReadEmbeddedResource("whitespace-before-comment.properties");
             var parsed = Parser.Parse(input);
-        
+
             var expected = Doc(
                 Whitespace("   "),
                 HashComment(" This comment has leading whitespace")
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -317,7 +317,7 @@ namespace JavaPropertiesParser.Tests
         {
             var input = ResourceUtils.ReadEmbeddedResource("value-with-unicode-escape.properties");
             var parsed = Parser.Parse(input);
-        
+
             var expected = Doc(
                 Pair(
                     Key("key"),
@@ -325,7 +325,7 @@ namespace JavaPropertiesParser.Tests
                     Value("valũe", "val\\u0169e")
                 )
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -334,7 +334,7 @@ namespace JavaPropertiesParser.Tests
         {
             var input = ResourceUtils.ReadEmbeddedResource("value-with-logical-newline.properties");
             var parsed = Parser.Parse(input);
-        
+
             var expected = Doc(
                 Pair(
                     Key("key"),
@@ -342,7 +342,7 @@ namespace JavaPropertiesParser.Tests
                     Value("val\r\nue", "val\\r\\nue")
                 )
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -351,7 +351,7 @@ namespace JavaPropertiesParser.Tests
         {
             var input = ResourceUtils.ReadEmbeddedResource("value-with-physical-newline.properties");
             var parsed = Parser.Parse(input);
-        
+
             var expected = Doc(
                 Pair(
                     Key("key"),
@@ -359,7 +359,7 @@ namespace JavaPropertiesParser.Tests
                     Value("value", "val\\\r\nue")
                 )
             );
-        
+
             parsed.Should().Be(expected);
         }
 
@@ -368,7 +368,7 @@ namespace JavaPropertiesParser.Tests
         {
             var input = ResourceUtils.ReadEmbeddedResource("value-with-physical-newline-and-indentation.properties");
             var parsed = Parser.Parse(input);
-        
+
             var expected = Doc(
                 Pair(
                     Key("key"),
