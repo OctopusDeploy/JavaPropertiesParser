@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml.XPath;
 using FluentAssertions;
 using JavaPropertiesParser.Expressions;
 using JavaPropertiesParser.Tests.TestUtils;
@@ -388,6 +392,36 @@ namespace JavaPropertiesParser.Tests
             Action action = () => Parser.Parse(input);
             action.Should()
                 .ThrowExactly<ParseException>();
+        }
+
+        [Test]
+        public void CanParseLikeJavaReference()
+        {
+            string UnixNewlines(string str) => str.Replace("\r", "");
+
+            var inputPairs
+                = Parser.Parse(ResourceUtils.ReadEmbeddedResource("parser-stress.properties"))
+                    .Expressions
+                    .OfType<KeyValuePairExpression>()
+                    .ToDictionary(inputPair => UnixNewlines(inputPair.Key?.Text.LogicalValue ?? ""),
+                        inputPair => UnixNewlines(inputPair.Value?.Text.LogicalValue ?? ""));
+            var inputKeyDisplay = string.Join(Environment.NewLine, inputPairs.Select(pair => pair.Key));
+
+            using var referenceReader
+                = new StringReader(ResourceUtils.ReadEmbeddedResource("parser-stress-reference-interpretation.xml"));
+
+            foreach (var referenceEntry in new XPathDocument(referenceReader)
+                .CreateNavigator()
+                .Select(@"//entry")
+                .OfType<XPathNavigator>())
+            {
+                var referenceKey = UnixNewlines(referenceEntry.GetAttribute("key", ""));
+                var referenceValue = UnixNewlines(referenceEntry.ToString());
+
+                if (!inputPairs.TryGetValue(referenceKey, out var inputValue))
+                    throw new Exception($"Expected to parse key '{referenceKey}', but only found: {inputKeyDisplay}");
+                Assert.AreEqual(referenceValue, inputValue, $"Difference in value of '{referenceKey}'");
+            }
         }
     }
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<entry key="">emptykey</entry>
+<entry key="euro">€</entry>
+<entry key="cheeses"></entry>
+<entry key="separate">tab</entry>
+<entry key="fruit">banana</entry>
+<entry key="leading">and trailing spaces    </entry>
+<entry key="&quot;quoted">key"="does not work"</entry>
+<entry key="3first">:separator wins</entry>
+<entry key="two">word line</entry>
+<entry key="three">word line</entry>
+<entry key="Truth1">Beauty</entry>
+<entry key="Truth2">Beauty</entry>
+<entry key="punctuation:=
+\
+	key">punctuation:=
+\
+	value</entry>
+<entry key="fruits">apple, banana, pear, cantaloupe, watermelon, kiwi, mango</entry>
+<entry key="four">word line #noncomment</entry>
+<entry key="quotedvalue">"this"</entry>
+<entry key="Truth3">Beauty</entry>
+<entry key="2first">: separator wins</entry>
+<entry key="sunnies">&#xd83d;&#xde0e;</entry>
+<entry key="dagger">†</entry>
+<entry key=" trimmedkey ">no</entry>
+<entry key="unnecessary">escapes '"ignored'"</entry>
+<entry key="joinedlines">onetwo two#three three threefour four four four    five</entry>
+<entry key="ending">with backslash\</entry>
+<entry key="1first">= separator wins</entry>
+<entry key="indentyes1">	here </entry>
+<entry key="indentyes2"> here </entry>
+<entry key="multiline">line one
+line two
+line three</entry>
+<entry key="colon">value</entry>
+<entry key="indentno2">here </entry>
+<entry key="indentno1">here </entry>
+<entry key="space-around-sep">trimmed</entry>
+<entry key="	tabtrimmedkey	">no</entry>
+</properties>
