@@ -1,0 +1,28 @@
+# Test file
+key1=value1
+KEY1=The new value for key\n1
+key\ 2:value2
+key\3= value3
+key\\4 :The new value for key 4
+key\
+5		: Key 5's\n\n\nnewvalue
+key6
+key7:
+key8:\
+value8
+
+! Another comment
+key\r\n\t\\\:9:value 9
+key10\
+:value\
+10
+:New value for the empty key
+k\u00c8y12:valu\u00c8
+key13==value13
+key14 value14
+key15	
+key16:value\r\n\\16
+key17:\
+               \
+  \
+         value17

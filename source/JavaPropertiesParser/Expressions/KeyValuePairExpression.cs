@@ -2,29 +2,27 @@
 {
     public class KeyValuePairExpression : ITopLevelExpression
     {
-        public KeyValuePairExpression(KeyExpression keyExpression, SeparatorExpression separatorExpression, ValueExpression valueExpression)
+        public KeyValuePairExpression(KeyExpression key, SeparatorExpression separator, ValueExpression value)
         {
-            KeyExpression = keyExpression;
-            SeparatorExpression = separatorExpression;
-            ValueExpression = valueExpression;
+            Key = key;
+            Separator = separator;
+            Value = value;
         }
         
-        public KeyExpression KeyExpression { get; }
+        public KeyExpression Key { get; }
         
-        public SeparatorExpression SeparatorExpression { get; }
+        public SeparatorExpression Separator { get; }
         
-        public ValueExpression ValueExpression { get; }
+        public ValueExpression Value { get; }
 
         public override string ToString()
         {
-            return KeyExpression.ToString() + SeparatorExpression + ValueExpression;
+            return Key?.ToString() + Separator + Value;
         }
 
         protected bool Equals(KeyValuePairExpression other)
         {
-            return Equals(KeyExpression, other.KeyExpression) 
-                && Equals(SeparatorExpression, other.SeparatorExpression) 
-                && Equals(ValueExpression, other.ValueExpression);
+            return Equals(Key, other.Key) && Equals(Separator, other.Separator) && Equals(Value, other.Value);
         }
 
         public override bool Equals(object obj)
@@ -39,9 +37,9 @@
         {
             unchecked
             {
-                var hashCode = KeyExpression != null ? KeyExpression.GetHashCode() : 0;
-                hashCode = (hashCode * 397) ^ (SeparatorExpression != null ? SeparatorExpression.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ValueExpression != null ? ValueExpression.GetHashCode() : 0);
+                var hashCode = Key != null ? Key.GetHashCode() : 0;
+                hashCode = (hashCode * 397) ^ (Separator != null ? Separator.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Value != null ? Value.GetHashCode() : 0);
                 return hashCode;
             }
         }

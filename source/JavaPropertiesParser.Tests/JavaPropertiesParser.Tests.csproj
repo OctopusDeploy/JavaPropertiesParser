@@ -16,28 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="Resources\key-with-colon-separator.properties" />
-      <EmbeddedResource Include="Resources\key-with-equals-separator.properties" />
-      <EmbeddedResource Include="Resources\key-with-logical-newline.properties" />
-      <EmbeddedResource Include="Resources\key-with-neither-separator-nor-value.properties" />
-      <EmbeddedResource Include="Resources\key-with-physical-newline-and-indentation.properties" />
-      <EmbeddedResource Include="Resources\key-with-physical-newline.properties" />
-      <EmbeddedResource Include="Resources\key-with-space-separator.properties" />
-      <EmbeddedResource Include="Resources\whitespace-before-comment.properties" />
-      <EmbeddedResource Include="Resources\whitespace-before-key.properties" />
-      <None Remove="Resources\blank.properties" />
-      <None Remove="Resources\single-line.properties" />
-      <EmbeddedResource Include="Resources\blank-line.properties" />
-      <EmbeddedResource Include="Resources\single-line.properties" />
-      <None Remove="Resources\hash-comment.properties" />
-      <EmbeddedResource Include="Resources\hash-comment.properties" />
-      <None Remove="Resources\exclamation-comment.properties" />
-      <EmbeddedResource Include="Resources\exclamation-comment.properties" />
-      <None Remove="Resources\empty.properties" />
-      <EmbeddedResource Include="Resources\empty.properties" />
-      <None Remove="Resources\multiple-pairs-and-comments.properties" />
-      <EmbeddedResource Include="Resources\multiple-pairs-and-comments.properties" />
-      <EmbeddedResource Include="Resources\invalid-unicode-escape.properties" />
+      <EmbeddedResource Include="Resources\*.properties" />
     </ItemGroup>
 
     <ItemGroup>

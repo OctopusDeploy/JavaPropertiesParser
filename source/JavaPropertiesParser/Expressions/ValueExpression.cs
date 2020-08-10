@@ -1,40 +1,24 @@
-﻿using System.Linq;
-using Superpower.Model;
+﻿using JavaPropertiesParser.Utils;
 
 namespace JavaPropertiesParser.Expressions
 {
     public class ValueExpression : IExpression
     {
-        public ValueExpression(params Token<TokenType>[] parts)
+        public ValueExpression(StringValue text)
         {
-            var contents = parts.Select(KeyComponents.GetStringValue);
-            Content = StringValues.Join(contents);
+            Text = text;
         }
 
-        public ValueExpression(string logicalValue)
-        {
-            // noship
-            // TODO: unicode
-            // TODO: leading spaces
-            var serializableValue = logicalValue
-                .Replace("\r", "\\r")
-                .Replace("\n", "\\n")
-                .Replace("\t", "\\t");
-            
-            Content = new StringValue(serializableValue, logicalValue);
-            
-        }
-
-        public StringValue Content { get; }
+        public StringValue Text { get; }
 
         public override string ToString()
         {
-            return Content.SerializableValue;
+            return Text.EncodedValue;
         }
 
         protected bool Equals(ValueExpression other)
         {
-            return Equals(Content, other.Content);
+            return Text.Equals(other.Text);
         }
 
         public override bool Equals(object obj)
@@ -47,7 +31,7 @@ namespace JavaPropertiesParser.Expressions
 
         public override int GetHashCode()
         {
-            return Content != null ? Content.GetHashCode() : 0;
+            return Text != null ? Text.GetHashCode() : 0;
         }
     }
 }
