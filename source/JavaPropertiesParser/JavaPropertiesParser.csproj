@@ -4,6 +4,9 @@
         <AssemblyName>JavaPropertiesParser</AssemblyName>
         <RootNamespace>JavaPropertiesParser</RootNamespace>
         <TargetFrameworks>net40;netstandard1.0</TargetFrameworks>
+        <Authors>Octopus Deploy</Authors>
+        <PackageProjectUrl>https://github.com/OctopusDeploy/JavaPropertiesParser</PackageProjectUrl>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     </PropertyGroup>
 
     <ItemGroup>
