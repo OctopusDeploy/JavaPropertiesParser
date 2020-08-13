@@ -14,7 +14,7 @@ Rather than parsing to a dictionary of key/value pairs, this parser gives you an
 - [`ParserFixture`](./source/JavaPropertiesParser.Tests/ParserFixture.cs) demonstrates the various `.properties` constructs that are supported and how they get represented in an AST.
 
 # Building .properties Files
-If you want to build a `.properties` file, consider using the [`Build`](./source/JavaPropertiesParser/Build.cs) class:
+If you want to build a `.properties` file in memory, consider using the [`Build`](./source/JavaPropertiesParser/Build.cs) class:
 
 ```C#
 using static JavaPropertiesParser.Build;
