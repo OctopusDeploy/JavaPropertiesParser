@@ -32,15 +32,21 @@ namespace JavaPropertiesParser.Parsers
             from next in Parse.CharExcept("rntu")
             select new StringValue(next.ToString(), "\\" + next);
 
-        public static readonly Parser<StringValue> EscapeSequenceParser =
-            from slash in Parse.Char('\\')
-            from rest in EscapedUnicodeSequenceParser
-                .XOr(EscapedCarriageReturnParser)
-                .XOr(EscapedLineFeedParser)
-                .XOr(EscapedTabParser)
-                .XOr(EscapedPhysicalNewLineParser)
-                .XOr(EscapedOtherParser)
-            select rest;
+        private static readonly Parser<StringValue> EscapedEofParser = 
+            from slash in Parse.Char('\\').End()
+            select new StringValue("", "\\");
+
+        public static readonly Parser<StringValue> EscapeSequenceParser = EscapedEofParser
+            .Or(
+                from slash in Parse.Char('\\')
+                from rest in EscapedUnicodeSequenceParser
+                    .XOr(EscapedCarriageReturnParser)
+                    .XOr(EscapedLineFeedParser)
+                    .XOr(EscapedTabParser)
+                    .XOr(EscapedPhysicalNewLineParser)
+                    .XOr(EscapedOtherParser)
+                select rest
+            );
 
         private static Parser<StringValue> BuildEscapeSequenceParser(char @char, string logicalValue)
         {

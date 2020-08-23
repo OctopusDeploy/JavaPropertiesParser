@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.XPath;
@@ -423,5 +422,40 @@ namespace JavaPropertiesParser.Tests
                 Assert.AreEqual(referenceValue, inputValue, $"Difference in value of '{referenceKey}'");
             }
         }
+
+        [Test]
+        public void CanParseASlashThenEofInKey()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("key-with-slash-eof.properties");
+            var parsed = Parser.Parse(input);
+
+            var expected = Doc(
+                Pair(
+                    Key("key", "key\\"),
+                    null,
+                    null
+                )
+            );
+
+            parsed.Should().Be(expected);
+        }
+
+        [Test]
+        public void CanParseASlashThenEofInValue()
+        {
+            var input = ResourceUtils.ReadEmbeddedResource("value-with-slash-eof.properties");
+            var parsed = Parser.Parse(input);
+
+            var expected = Doc(
+                Pair(
+                    Key("key"),
+                    Separator(":"),
+                    Value("value", "value\\")
+                )
+            );
+
+            parsed.Should().Be(expected);
+        }
+
     }
 }
