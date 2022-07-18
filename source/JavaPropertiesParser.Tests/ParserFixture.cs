@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.XPath;
@@ -350,37 +351,49 @@ namespace JavaPropertiesParser.Tests
         }
 
         [Test]
-        public void CanParseAValueWithAPhysicalNewLine()
+        [TestCase("value-with-physical-crlf-newline.properties")]
+        [TestCase("value-with-physical-lf-newline.properties")]
+        public void CanParseAValueWithAPhysicalNewLine(string resourceName)
         {
-            var input = ResourceUtils.ReadEmbeddedResource("value-with-physical-newline.properties");
+            var input = ResourceUtils.ReadEmbeddedResource(resourceName);
             var parsed = Parser.Parse(input);
+            var expectedKey = Key("key");
+            var expectedSeparator = Separator(":");
 
-            var expected = Doc(
-                Pair(
-                    Key("key"),
-                    Separator(":"),
-                    Value("value", "val\\\r\nue")
-                )
-            );
+            var expectedValues = new List<ValueExpression>
+            {
+                Value("value", "val\\\r\nue"), // Windows newline - CRLF.
+                Value("value", "val\\\nue") // Linux & MacOS newline - LF. 
+            };
 
-            parsed.Should().Be(expected);
+            parsed.Expressions.Should().ContainSingle().Which.Should().BeAssignableTo<KeyValuePairExpression>();
+            var resultExpression = (KeyValuePairExpression)parsed.Expressions.First();
+            resultExpression.Key.Should().Be(expectedKey);
+            resultExpression.Separator.Should().Be(expectedSeparator);
+            expectedValues.Should().Contain(resultExpression.Value);
         }
 
         [Test]
-        public void CanParseAValueWithAPhysicalNewLineAndIndentation()
+        [TestCase("value-with-physical-crlf-newline-and-indentation.properties")]
+        [TestCase("value-with-physical-lf-newline-and-indentation.properties")]
+        public void CanParseAValueWithAPhysicalNewLineAndIndentation(string resourceName)
         {
-            var input = ResourceUtils.ReadEmbeddedResource("value-with-physical-newline-and-indentation.properties");
+            var input = ResourceUtils.ReadEmbeddedResource(resourceName);
             var parsed = Parser.Parse(input);
+            var expectedKey = Key("key");
+            var expectedSeparator = Separator(":");
 
-            var expected = Doc(
-                Pair(
-                    Key("key"),
-                    Separator(":"),
-                    Value("value", "val\\\r\n   ue")
-                )
-            );
+            var expectedValues = new List<ValueExpression>
+            {
+                Value("value", "val\\\r\n   ue"), // Windows newline - CRLF.
+                Value("value", "val\\\n   ue") // Linux & MacOS newline - LF. 
+            };
 
-            parsed.Should().Be(expected);
+            parsed.Expressions.Should().ContainSingle().Which.Should().BeAssignableTo<KeyValuePairExpression>();
+            var resultExpression = (KeyValuePairExpression)parsed.Expressions.First();
+            resultExpression.Key.Should().Be(expectedKey);
+            resultExpression.Separator.Should().Be(expectedSeparator);
+            expectedValues.Should().Contain(resultExpression.Value);
         }
 
         [Test]
@@ -456,6 +469,5 @@ namespace JavaPropertiesParser.Tests
 
             parsed.Should().Be(expected);
         }
-
     }
 }
