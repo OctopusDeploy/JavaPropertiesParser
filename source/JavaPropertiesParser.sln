@@ -4,12 +4,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JavaPropertiesParser", "Jav
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JavaPropertiesParser.Tests", "JavaPropertiesParser.Tests\JavaPropertiesParser.Tests.csproj", "{D6E01005-846A-4610-B09A-B3F1308CEC63}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "..\build\_build.csproj", "{3634A3A8-A107-4D7E-B12C-392FF6158B61}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3634A3A8-A107-4D7E-B12C-392FF6158B61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3634A3A8-A107-4D7E-B12C-392FF6158B61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74404F35-45DD-4F7C-902B-A2B667D126E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{74404F35-45DD-4F7C-902B-A2B667D126E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74404F35-45DD-4F7C-902B-A2B667D126E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
