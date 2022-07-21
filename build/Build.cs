@@ -1,4 +1,6 @@
+// ReSharper disable RedundantUsingDirective
 using Nuke.Common;
+using Nuke.Common.CI;
 using Nuke.Common.Execution;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
@@ -10,7 +12,7 @@ using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [CheckBuildProjectConfigurations]
-[UnsetVisualStudioEnvironmentVariables]
+[ShutdownDotNetAfterServerBuild]
 class Build : NukeBuild
 {
     const string CiBranchNameEnvVariable = "OCTOVERSION_CurrentBranch";
@@ -25,13 +27,12 @@ class Build : NukeBuild
     [Parameter("Branch name for OctoVersion to use to calculate the version number. Can be set via the environment variable " + CiBranchNameEnvVariable + ".", Name = CiBranchNameEnvVariable)]
     string BranchName { get; set; }
 
-    [OctoVersion(BranchParameter = nameof(BranchName), AutoDetectBranchParameter = nameof(AutoDetectBranch))] 
+    [OctoVersion(BranchParameter = nameof(BranchName), AutoDetectBranchParameter = nameof(AutoDetectBranch), Framework = "net6.0")] 
     public OctoVersionInfo OctoVersionInfo;
 
     AbsolutePath SourceDirectory => RootDirectory / "source";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
-    AbsolutePath LocalPackagesDirectory => RootDirectory / ".." / "LocalPackages";
-
+    
     Target Clean => _ => _
         .Before(Restore)
         .Executes(() =>
@@ -41,6 +42,7 @@ class Build : NukeBuild
         });
 
     Target Restore => _ => _
+        .DependsOn(Clean)
         .Executes(() =>
         {
             DotNetRestore(_ => _
@@ -50,7 +52,7 @@ class Build : NukeBuild
     Target CalculateVersion => _ => _
         .Executes(() =>
         {
-            //all the magic happens inside `[NukeOctoVersion]` above. we just need a target for TeamCity to call
+            //all the magic happens inside `[OctoVersionInfo]` above.
         });
 
     Target Compile => _ => _
@@ -59,7 +61,7 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
-            Log.Information("Building Octopus.RoslynAnalyzers v{Version}", OctoVersionInfo.FullSemVer);
+            Log.Information("Building JavaPropertiesParser v{Version}", OctoVersionInfo.FullSemVer);
 
             DotNetBuild(_ => _
                 .SetProjectFile(Solution)
@@ -98,23 +100,10 @@ class Build : NukeBuild
             );
         });
 
-    Target CopyToLocalPackages => _ => _
-        .OnlyWhenStatic(() => IsLocalBuild)
-        .DependsOn(Pack)
-        .Executes(() =>
-        {
-            EnsureExistingDirectory(LocalPackagesDirectory);
-            CopyFileToDirectory(ArtifactsDirectory / $"Octopus.RoslynAnalyzers.{OctoVersionInfo.FullSemVer}.nupkg", LocalPackagesDirectory, FileExistsPolicy.Overwrite);
-        });
-
-    Target Default => _ => _
-        .DependsOn(Pack)
-        .DependsOn(CopyToLocalPackages);
-
     /// Support plugins are available for:
     /// - JetBrains ReSharper        https://nuke.build/resharper
     /// - JetBrains Rider            https://nuke.build/rider
     /// - Microsoft VisualStudio     https://nuke.build/visualstudio
     /// - Microsoft VSCode           https://nuke.build/vscode
-    public static int Main() => Execute<Build>(x => x.Default);
+    public static int Main() => Execute<Build>(x => x.Pack);
 }
