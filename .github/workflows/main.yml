@@ -78,7 +78,7 @@ jobs:
         space: Core Platform
         api_key: ${{ secrets.DEPLOY_API_KEY }}
         packages: |
-          ./artifacts/Octodiff.${{ steps.build.outputs.octoversion_fullsemver }}.nupkg          
+          ./artifacts/JavaPropertiesParser.${{ steps.build.outputs.octoversion_fullsemver }}.nupkg          
 
     - name: Create Release in Octopus 🐙
       uses: OctopusDeploy/create-release-action@v1
@@ -86,6 +86,6 @@ jobs:
         server: ${{ secrets.DEPLOY_URL }}
         space: Core Platform
         api_key: ${{ secrets.DEPLOY_API_KEY }}
-        project: "Octodiff"
+        project: "JavaPropertiesParser"
         packages: |
-          Octodiff:${{ steps.build.outputs.octoversion_fullsemver }}         
+          JavaPropertiesParser:${{ steps.build.outputs.octoversion_fullsemver }}         
