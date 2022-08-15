@@ -25,7 +25,7 @@ env:
   OCTOVERSION_Patch: ${{ github.run_number }}
   OCTOPUSDEPLOY_Space: "Core Platform"
   OCTOPUSDEPLOY_Project: ${{ github.event.repository.name }} #Update when git & 🐙 deploy project name are not matching. 
-  OCTOPUSDEPLOY_Package: ${{ env.OCTOPUSDEPLOY_Project }}
+  OCTOPUSDEPLOY_Package: ${{ github.event.repository.name }}
 
 jobs:
   test-windows:
