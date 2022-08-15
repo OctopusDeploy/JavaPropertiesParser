@@ -61,7 +61,7 @@ jobs:
       run: ./build.sh --verbosity verbose
 
     - name: Tag release (when not pre-release) 🏷️
-      if: github.event_name != 'schedule' || ${{ !contains( steps.build.outputs.octoversion_fullsemver, '-' ) }}
+      if: github.event_name != 'schedule' && ${{ !contains( steps.build.outputs.octoversion_fullsemver, '-' ) }}
       uses: actions/github-script@v3
       with:
         github-token: ${{ github.token }}
