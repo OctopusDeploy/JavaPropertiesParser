@@ -82,7 +82,9 @@ class Build : NukeBuild
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
                 .SetNoBuild(true)
-                .EnableNoRestore());
+                .EnableNoRestore()
+                .SetLoggers("trx")
+                .SetResultsDirectory("./TestResults/"));
         });
 
     Target Pack => _ => _
