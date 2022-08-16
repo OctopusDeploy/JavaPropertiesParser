@@ -67,6 +67,7 @@ jobs:
       
     # Adjustment is done prior to Nuke build as OCTOVERSION information is included in the result package.
     - name: Append OCTOVERSION_CurrentBranch with -nightly (for scheduled)
+      if: github.event_name == 'schedule'
       run: echo "OCTOVERSION_CurrentBranch=${{ env.OCTOVERSION_CurrentBranch }}-nightly" >> $GITHUB_ENV
 
     - name: Nuke Build 🏗
@@ -99,7 +100,7 @@ jobs:
       uses: OctopusDeploy/install-octopus-cli-action@v1
       with:
         version: latest
-        
+
     - name: Push to Octopus 🐙
       uses: OctopusDeploy/push-package-action@v1
       with:
