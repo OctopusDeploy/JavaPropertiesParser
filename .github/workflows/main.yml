@@ -13,12 +13,19 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+  schedule:
+    # Daily 5am australian/brisbane time
+    - cron: '0 19 * * *'
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 env:
   OCTOVERSION_CurrentBranch: ${{ github.head_ref || github.ref }}
   OCTOVERSION_Patch: ${{ github.run_number }}
+  OCTOPUSDEPLOY_Space: "Core Platform"
+  OCTOPUSDEPLOY_Project: ${{ github.event.repository.name }} #Update when git & 🐙 deploy project name are not matching. 
+  OCTOPUSDEPLOY_Package: ${{ github.event.repository.name }}
 
 jobs:
   test-windows:
@@ -35,6 +42,15 @@ jobs:
 
       - name: Test NET6
         run: ./build.ps1 -target Test
+
+      - name: Windows unit test report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: Windows unit test results
+          path: ./TestResults/*.trx
+          reporter: dotnet-trx
+          fail-on-error: true
         
   build-release-linux:
     needs: test-windows
@@ -48,13 +64,27 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: '6.0.x'
+      
+    # Adjustment is done prior to Nuke build as OCTOVERSION information is included in the result package.
+    - name: Append OCTOVERSION_CurrentBranch with -nightly (for scheduled)
+      if: github.event_name == 'schedule'
+      run: echo "OCTOVERSION_CurrentBranch=${{ env.OCTOVERSION_CurrentBranch }}-nightly" >> $GITHUB_ENV
 
     - name: Nuke Build 🏗
       id: build
       run: ./build.sh --verbosity verbose
 
+    - name: Linux unit test report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()    # run this step even if previous step failed
+      with:
+        name: Linux unit test results
+        path: ./TestResults/*.trx
+        reporter: dotnet-trx
+        fail-on-error: true
+
     - name: Tag release (when not pre-release) 🏷️
-      if: ${{ !contains( steps.build.outputs.octoversion_fullsemver, '-' ) }}
+      if: ${{ github.event_name != 'schedule' && !contains( steps.build.outputs.octoversion_fullsemver, '-' ) }}
       uses: actions/github-script@v3
       with:
         github-token: ${{ github.token }}
@@ -70,22 +100,22 @@ jobs:
       uses: OctopusDeploy/install-octopus-cli-action@v1
       with:
         version: latest
-      
+
     - name: Push to Octopus 🐙
       uses: OctopusDeploy/push-package-action@v1
       with:
         server: ${{ secrets.DEPLOY_URL }}
-        space: Core Platform
+        space: ${{ env.OCTOPUSDEPLOY_Space }}
         api_key: ${{ secrets.DEPLOY_API_KEY }}
         packages: |
-          ./artifacts/JavaPropertiesParser.${{ steps.build.outputs.octoversion_fullsemver }}.nupkg          
+          ./artifacts/${{ env.OCTOPUSDEPLOY_Package }}.${{ steps.build.outputs.octoversion_fullsemver }}.nupkg          
 
     - name: Create Release in Octopus 🐙
       uses: OctopusDeploy/create-release-action@v1
       with:
         server: ${{ secrets.DEPLOY_URL }}
-        space: Core Platform
+        space: ${{ env.OCTOPUSDEPLOY_Space }}
         api_key: ${{ secrets.DEPLOY_API_KEY }}
-        project: "JavaPropertiesParser"
+        project: ${{ env.OCTOPUSDEPLOY_Project }}
         packages: |
-          JavaPropertiesParser:${{ steps.build.outputs.octoversion_fullsemver }}         
+          ${{ env.OCTOPUSDEPLOY_Package }}:${{ steps.build.outputs.octoversion_fullsemver }}         
