@@ -78,8 +78,7 @@ jobs:
       with:
         version: latest
         
-    - name: Update Package Name with -nightly (for scheduled)
-      if: github.event_name == 'schedule'
+    - name: Update Package Name with -nightly (for scheduled)      
       run: echo "OCTOPUSDEPLOY_Package=${{ env.OCTOPUSDEPLOY_Package }}-nightly" >> $GITHUB_ENV
       
     - name: Push to Octopus 🐙
