@@ -23,9 +23,6 @@ on:
 env:
   OCTOVERSION_CurrentBranch: ${{ github.head_ref || github.ref }}
   OCTOVERSION_Patch: ${{ github.run_number }}
-  OCTOPUSDEPLOY_Space: "Core Platform"
-  OCTOPUSDEPLOY_Project: ${{github.repository#*/}} #Update when git & 🐙 deploy project name are not matching. 
-  OCTOPUSDEPLOY_Package: ${{github.repository#*/}} #GITHUB_REPOSITORY returns owner/repo-name. This will strip owner and retain repo-name.
 
 jobs:
   test-windows:
@@ -100,6 +97,16 @@ jobs:
       uses: OctopusDeploy/install-octopus-cli-action@v1
       with:
         version: latest
+
+    - name: Set Octopus Related ENV
+      #Set Octopus Deploy Space Name
+      #Set Octopus Deploy Project Name
+      #Set Package Name  
+      #GITHUB_REPOSITORY returns owner/repo-name. This will strip owner and retain repo-name. (IE: OctopusDeploy/JavaPropertiesParser = JavaPropertiesParser)      
+      run: |
+        echo "OCTOPUSDEPLOY_Space=Core Platform" >> $GITHUB_ENV
+        echo "OCTOPUSDEPLOY_Project=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
+        echo "OCTOPUSDEPLOY_Package=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
 
     - name: Push to Octopus 🐙
       uses: OctopusDeploy/push-package-action@v1
