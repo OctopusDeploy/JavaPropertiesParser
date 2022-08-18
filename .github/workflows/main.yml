@@ -24,8 +24,8 @@ env:
   OCTOVERSION_CurrentBranch: ${{ github.head_ref || github.ref }}
   OCTOVERSION_Patch: ${{ github.run_number }}
   OCTOPUSDEPLOY_Space: "Core Platform"
-  OCTOPUSDEPLOY_Project: ${GITHUB_REPOSITORY#*/} #Update when git & 🐙 deploy project name are not matching. 
-  OCTOPUSDEPLOY_Package: ${GITHUB_REPOSITORY#*/} #GITHUB_REPOSITORY returns owner/repo-name. This will strip owner and retain repo-name.
+  OCTOPUSDEPLOY_Project: ${{github.repository#*/}} #Update when git & 🐙 deploy project name are not matching. 
+  OCTOPUSDEPLOY_Package: ${{github.repository#*/}} #GITHUB_REPOSITORY returns owner/repo-name. This will strip owner and retain repo-name.
 
 jobs:
   test-windows:
