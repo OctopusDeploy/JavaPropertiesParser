@@ -106,7 +106,7 @@ jobs:
       run: |
         echo "OCTOPUSDEPLOY_Space=Core Platform" >> $GITHUB_ENV
         echo "OCTOPUSDEPLOY_Project=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
-        echo "OCTOPUSDEPLOY_Package=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
+        echo "OCTOPUSDEPLOY_Package=Octopus.JavaPropertiesParser" >> $GITHUB_ENV
 
     - name: Push to Octopus 🐙
       uses: OctopusDeploy/push-package-action@v1
