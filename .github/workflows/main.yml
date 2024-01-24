@@ -52,9 +52,11 @@ jobs:
   build-release-linux:
     needs: test-windows
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write # Required to obtain the ID token from GitHub Actions
+      contents: read # Required to check out code
+      checks: write # Required for test-reporter
     env:
-      OCTOPUS_API_KEY: ${{ secrets.DEPLOY_API_KEY }}
-      OCTOPUS_URL: ${{ secrets.DEPLOY_URL }}
       OCTOPUS_SPACE: "Core Platform"
     steps:
     - uses: actions/checkout@v4
@@ -97,13 +99,22 @@ jobs:
             sha: context.sha
           })
 
+    - name: Login to Octopus Deploy 🐙
+      if: (! contains(github.ref, '/merge')) && (! contains(github.ref, '/dependabot/')) && (! contains(github.ref, 'prettybot/'))
+      uses: OctopusDeploy/login@v1
+      with: 
+        server: https://deploy.octopus.app
+        service_account_id: 68b2db4c-06d7-4340-af7a-2e3142930c10
+
     - name: Push to Octopus 🐙
+      if: (! contains(github.ref, '/merge')) && (! contains(github.ref, '/dependabot/')) && (! contains(github.ref, 'prettybot/'))
       uses: OctopusDeploy/push-package-action@v3
       with:
         packages: |
           ./artifacts/Octopus.JavaPropertiesParser.${{ steps.build.outputs.octoversion_fullsemver }}.nupkg          
 
     - name: Create Release in Octopus 🐙
+      if: (! contains(github.ref, '/merge')) && (! contains(github.ref, '/dependabot/')) && (! contains(github.ref, 'prettybot/'))
       uses: OctopusDeploy/create-release-action@v3
       with:
         project: JavaPropertiesParser
