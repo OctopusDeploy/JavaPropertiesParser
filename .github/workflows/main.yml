@@ -22,7 +22,7 @@ on:
 
 env:
   OCTOVERSION_CurrentBranch: ${{ github.head_ref || github.ref }}
-  OCTOVERSION_Patch: ${{ github.run_number }}
+  OCTOPUS_SPACE: "Core Platform"
 
 jobs:
   test-windows:
@@ -33,7 +33,7 @@ jobs:
           fetch-depth: 0 # all
 
       - name: Setup .NET 8
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
@@ -54,22 +54,19 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write # Required to obtain the ID token from GitHub Actions
-      contents: read # Required to check out code
+      contents: write # Read Required to check out code, Write to create Git Tags
       checks: write # Required for test-reporter
-    env:
-      OCTOPUS_SPACE: "Core Platform"
     steps:
     - uses: actions/checkout@v4
       with:
-        fetch-depth: 0 # all
+        fetch-depth: 0
 
     - name: Setup .NET 8
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.x'
-      
-    # Adjustment is done prior to Nuke build as OCTOVERSION information is included in the result package.
-    - name: Append OCTOVERSION_CurrentBranch with -nightly (for scheduled)
+        dotnet-version: 8.0.x
+
+    - name: Append OCTOVERSION_CurrentBranch with -nightly-<timestamp> (for scheduled)
       if: github.event_name == 'schedule'
       run: echo "OCTOVERSION_CurrentBranch=${{ env.OCTOVERSION_CurrentBranch }}-nightly-$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
 
@@ -86,8 +83,8 @@ jobs:
         reporter: dotnet-trx
         fail-on-error: true
 
-    - name: Tag release (when not pre-release) 🏷️
-      if: ${{ github.event_name != 'schedule' && !contains( steps.build.outputs.octoversion_fullsemver, '-' ) }}
+    - name: Git Tag (when not pre-release) 🏷️
+      if: ${{ !contains( steps.build.outputs.octoversion_fullsemver, '-' ) }}
       uses: actions/github-script@v7
       with:
         github-token: ${{ github.token }}
@@ -103,7 +100,7 @@ jobs:
       if: (! contains(github.ref, '/merge')) && (! contains(github.ref, '/dependabot/')) && (! contains(github.ref, 'prettybot/'))
       uses: OctopusDeploy/login@v1
       with: 
-        server: https://deploy.octopus.app
+        server: ${{ secrets.OCTOPUS_URL }}
         service_account_id: 68b2db4c-06d7-4340-af7a-2e3142930c10
 
     - name: Push to Octopus 🐙
@@ -111,12 +108,13 @@ jobs:
       uses: OctopusDeploy/push-package-action@v3
       with:
         packages: |
-          ./artifacts/Octopus.JavaPropertiesParser.${{ steps.build.outputs.octoversion_fullsemver }}.nupkg          
+          ./artifacts/Octopus.JavaPropertiesParser.${{ steps.build.outputs.octoversion_fullsemver }}.nupkg
 
     - name: Create Release in Octopus 🐙
       if: (! contains(github.ref, '/merge')) && (! contains(github.ref, '/dependabot/')) && (! contains(github.ref, 'prettybot/'))
       uses: OctopusDeploy/create-release-action@v3
       with:
         project: JavaPropertiesParser
+        release_number: ${{ steps.build.outputs.octoversion_fullsemver }}
         packages: |
-          Octopus.JavaPropertiesParser:${{ steps.build.outputs.octoversion_fullsemver }}         
+          Octopus.JavaPropertiesParser:${{ steps.build.outputs.octoversion_fullsemver }}
