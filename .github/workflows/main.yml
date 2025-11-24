@@ -28,7 +28,7 @@ jobs:
   test-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0 # all
 
@@ -57,7 +57,7 @@ jobs:
       contents: write # Read Required to check out code, Write to create Git Tags
       checks: write # Required for test-reporter
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         fetch-depth: 0
 
