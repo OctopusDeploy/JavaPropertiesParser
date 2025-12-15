@@ -105,7 +105,7 @@ jobs:
 
     - name: Push to Octopus 🐙
       if: (! contains(github.ref, '/merge')) && (! contains(github.ref, '/dependabot/')) && (! contains(github.ref, 'prettybot/'))
-      uses: OctopusDeploy/push-package-action@v3
+      uses: OctopusDeploy/push-package-action@v4
       with:
         packages: |
           ./artifacts/Octopus.JavaPropertiesParser.${{ steps.build.outputs.octoversion_fullsemver }}.nupkg
